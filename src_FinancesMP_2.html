@@ -103,9 +103,9 @@ const translations = {
     allCategories: "All Categories",
     noTransactionsFound: "No transactions found.",
     dataManagement: "Data Management",
-    clearDataDesc: "Clear all transactions, scheduled items, and savings to zero.",
+    clearDataDesc: "Clear all transactions, scheduled items, accounts, budgets, and savings to zero.",
     resetToZero: "Reset to Zero",
-    confirmReset: "Are you sure you want to reset all data to zero? This will permanently wipe all transactions, scheduled items, and savings goals.",
+    confirmReset: "Are you sure you want to reset all data to zero? This will permanently wipe all transactions, scheduled items, accounts, budgets, and savings goals.",
     resetSuccess: "All financial data has been reset to zero.",
     savingsTransfers: "Savings & Transfers",
     currentSavings: "Current Savings",
@@ -176,7 +176,52 @@ const translations = {
     homeTab: "Home",
     historyTab: "History",
     savingsTab: "Savings",
-    scheduledTab: "Scheduled"
+    scheduledTab: "Scheduled",
+    netWorthTab: "Net Worth",
+    netWorth: "Net Worth",
+    totalAssets: "Total Assets",
+    totalLiabilities: "Total Liabilities",
+    addAccount: "Add Account",
+    editAccount: "Edit Account",
+    accountNamePlaceholder: "Account Name (e.g. Checking, Car Loan)",
+    accountBalancePlaceholder: "Balance ($)",
+    asset: "Asset",
+    liability: "Liability",
+    accountTypeChecking: "Checking",
+    accountTypeSavings: "Savings",
+    accountTypeCash: "Cash",
+    accountTypeInvestment: "Investment",
+    accountTypeCredit: "Credit Card",
+    accountTypeLoan: "Loan",
+    accountTypeOther: "Other",
+    noAccounts: "No accounts added yet.",
+    updateAccount: "Update Account",
+    saveAccount: "Save Account",
+    upcomingReminders: "Upcoming Bills & Income",
+    noUpcomingReminders: "Nothing due in the next 7 days.",
+    dueToday: "Due today",
+    dueTomorrow: "Due tomorrow",
+    dueIn: "Due in",
+    daysUnit: "days",
+    monthlyTrend: "Monthly Trend",
+    notEnoughTrendData: "Add transactions across a few months to see a trend.",
+    budgets: "Budgets",
+    addBudget: "Add Budget",
+    editBudget: "Edit Budget",
+    budgetLimitPlaceholder: "Monthly Limit ($)",
+    noBudgets: "No budgets set yet.",
+    onTrack: "On track",
+    closeToBudget: "Close to limit",
+    overBudget: "Over budget",
+    perMonth: "/mo",
+    saveBudget: "Save Budget",
+    updateBudget: "Update Budget",
+    takePhoto: "Take Photo",
+    uploadReceipt: "Upload Receipt",
+    processingReceipt: "Reading receipt…",
+    receiptError: "Couldn't read that receipt clearly. Please check the details or enter it manually.",
+    receiptProcessed: "Receipt scanned — review the details below, then save.",
+    receiptScanFailed: "Something went wrong scanning that receipt. Please enter the transaction manually."
   },
   ht: {
     welcomeTitle: "Byenvini!",
@@ -217,9 +262,9 @@ const translations = {
     allCategories: "Tout Kategori",
     noTransactionsFound: "Pa jwenn okenn tranzaksyon.",
     dataManagement: "Jesyon Done",
-    clearDataDesc: "Efase tout tranzaksyon, eleman planifye, ak ekonomi pou mete yo a zewo.",
+    clearDataDesc: "Efase tout tranzaksyon, eleman planifye, kont, bidjè, ak ekonomi pou mete yo a zewo.",
     resetToZero: "Rekomanse  a Zewo",
-    confirmReset: "Èske ou sèten ou vle met tout done yo a zewo? Sa ap efase nèt tout tranzaksyon, eleman planifye, ak objektif ekonomi yo.",
+    confirmReset: "Èske ou sèten ou vle met tout done yo a zewo? Sa ap efase nèt tout tranzaksyon, eleman planifye, kont, bidjè, ak objektif ekonomi yo.",
     resetSuccess: "Tout finansye yo tounen nan zewo.",
     savingsTransfers: " Transfè nan Kob sere",
     currentSavings: "Kob ou sere Kounye a",
@@ -290,9 +335,102 @@ const translations = {
     homeTab: "Akèy",
     historyTab: "Istwa",
     savingsTab: "Ekonomi",
-    scheduledTab: "Planifikasyon"
+    scheduledTab: "Planifikasyon",
+    netWorthTab: "Valè Nèt",
+    netWorth: "Valè Nèt",
+    totalAssets: "Total Byen",
+    totalLiabilities: "Total Dèt",
+    addAccount: "Ajoute Kont",
+    editAccount: "Modifye Kont lan",
+    accountNamePlaceholder: "Non Kont (egz. Kont Kouran, Prè Machin)",
+    accountBalancePlaceholder: "Balans ($)",
+    asset: "Byen",
+    liability: "Dèt",
+    accountTypeChecking: "Kont Kouran",
+    accountTypeSavings: "Kont Ekonomi",
+    accountTypeCash: "Lajan Kach",
+    accountTypeInvestment: "Envestisman",
+    accountTypeCredit: "Kat Kredi",
+    accountTypeLoan: "Prè",
+    accountTypeOther: "Lòt",
+    noAccounts: "Okenn kont poko ajoute.",
+    updateAccount: "Mete Kont lan a Jou",
+    saveAccount: "Anrejistre Kont",
+    upcomingReminders: "Bil ak Kob k ap Antre Byento",
+    noUpcomingReminders: "Pa gen anyen ki dwe nan pwochen 7 jou yo.",
+    dueToday: "Dwe jodi a",
+    dueTomorrow: "Dwe demen",
+    dueIn: "Dwe nan",
+    daysUnit: "jou",
+    monthlyTrend: "Tandans Chak Mwa",
+    notEnoughTrendData: "Ajoute tranzaksyon sou plizyè mwa pou wè yon tandans.",
+    budgets: "Bidjè",
+    addBudget: "Ajoute Bidjè",
+    editBudget: "Modifye Bidjè",
+    budgetLimitPlaceholder: "Limit Chak Mwa ($)",
+    noBudgets: "Poko gen bidjè mete.",
+    onTrack: "Sou bon chemen",
+    closeToBudget: "Prèske rive nan limit",
+    overBudget: "Depase bidjè",
+    perMonth: "/mwa",
+    saveBudget: "Anrejistre Bidjè",
+    updateBudget: "Mete Bidjè a Jou",
+    takePhoto: "Pran Foto",
+    uploadReceipt: "Chaje Resi",
+    processingReceipt: "Ap li resi a…",
+    receiptError: "Nou pa t kapab li resi a byen klè. Tanpri verifye detay yo oswa antre yo manyèlman.",
+    receiptProcessed: "Resi eskane — verifye detay yo anba a, epi anrejistre.",
+    receiptScanFailed: "Gen yon pwoblèm ki fèt pandan n ap eskane resi a. Tanpri antre tranzaksyon an manyèlman."
   }
 };
+
+// Collision-resistant ID generator (falls back gracefully if crypto.randomUUID
+// isn't available). Using Date.now() alone risked duplicate React keys when
+// two records were created within the same millisecond.
+function generateId() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+// Parses a single CSV line into fields, correctly handling quoted fields
+// (including embedded commas and escaped "" quotes) as well as plain
+// unquoted fields that contain spaces — the previous regex-based approach
+// dropped/mis-split unquoted multi-word fields like an unquoted "Grocery Store".
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+
+    if (inQuotes) {
+      if (char === '"') {
+        if (line[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        current += char;
+      }
+    } else {
+      if (char === '"') {
+        inQuotes = true;
+      } else if (char === ',') {
+        result.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+  }
+  result.push(current);
+  return result;
+}
 
 function CashFlowChart({ income, expenses, lang }) {
   const chartRef = useRef(null);
@@ -409,6 +547,114 @@ function ProjectedVsActualChart({ actualExpense, projectedExpense, chartType, la
 
   return (
     <div className="h-44 sm:h-52 w-full flex items-center justify-center">
+      <canvas ref={chartRef}></canvas>
+    </div>
+  );
+}
+
+function MonthlyTrendChart({ transactions, lang }) {
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
+  const t = translations[lang];
+
+  // Group transactions by YYYY-MM, then take the last 6 months that have
+  // any activity (chronological order), so the trend reads left-to-right oldest to newest.
+  const monthMap = {};
+  transactions.forEach(tx => {
+    if (!tx.date) return;
+    const key = tx.date.slice(0, 7); // "YYYY-MM"
+    if (!monthMap[key]) monthMap[key] = { income: 0, expense: 0 };
+    if (tx.type === 'income') monthMap[key].income += Number(tx.amount);
+    else monthMap[key].expense += Number(tx.amount);
+  });
+
+  const sortedKeys = Object.keys(monthMap).sort();
+  const lastSixKeys = sortedKeys.slice(-6);
+
+  const monthLabel = (key) => {
+    const [y, m] = key.split('-').map(Number);
+    return new Date(Date.UTC(y, m - 1, 1)).toLocaleString(lang === 'ht' ? 'fr-FR' : 'default', { month: 'short', year: '2-digit', timeZone: 'UTC' });
+  };
+
+  const labels = lastSixKeys.map(monthLabel);
+  const incomeData = lastSixKeys.map(k => monthMap[k].income);
+  const expenseData = lastSixKeys.map(k => monthMap[k].expense);
+
+  useEffect(() => {
+    if (!chartRef.current || lastSixKeys.length === 0) return;
+    const ctx = chartRef.current.getContext('2d');
+
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    chartInstance.current = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: t.income,
+            data: incomeData,
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.15)',
+            tension: 0.3,
+            fill: true,
+            pointRadius: 3,
+            pointBackgroundColor: '#10b981'
+          },
+          {
+            label: t.expense,
+            data: expenseData,
+            borderColor: '#f43f5e',
+            backgroundColor: 'rgba(244, 63, 94, 0.15)',
+            tension: 0.3,
+            fill: true,
+            pointRadius: 3,
+            pointBackgroundColor: '#f43f5e'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans', size: 11 }, padding: 12, boxWidth: 12 }
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => `${context.dataset.label}: $${context.raw.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+            }
+          }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 11 } } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 11 } } }
+        }
+      }
+    });
+
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+        chartInstance.current = null;
+      }
+    };
+  }, [JSON.stringify(lastSixKeys), JSON.stringify(incomeData), JSON.stringify(expenseData), lang]);
+
+  if (lastSixKeys.length < 2) {
+    return (
+      <div className="h-36 sm:h-44 w-full flex items-center justify-center text-center text-xs text-slate-500 px-4">
+        {t.notEnoughTrendData}
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-36 sm:h-44 w-full">
       <canvas ref={chartRef}></canvas>
     </div>
   );
@@ -531,11 +777,39 @@ function HouseholdFinanceHub() {
     }
   });
 
+  const [accounts, setAccounts] = useState(() => {
+    try {
+      const saved = localStorage.getItem('hfh_accounts');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const [budgets, setBudgets] = useState(() => {
+    try {
+      const saved = localStorage.getItem('hfh_budgets');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
   const [activeGoalModal, setActiveGoalModal] = useState(null);
   const [modalAmount, setModalAmount] = useState('');
   const [goalForm, setGoalForm] = useState({ name: '', target: '', current: '' });
 
+  const [editingAccountId, setEditingAccountId] = useState(null);
+  const [accountForm, setAccountForm] = useState({ name: '', balance: '', classification: 'asset', type: 'checking' });
+
+  const [editingBudgetId, setEditingBudgetId] = useState(null);
+  const [budgetForm, setBudgetForm] = useState({ category: 'General Expense', limit: '' });
+
   const [transForm, setTransForm] = useState({ description: '', amount: '', category: 'General Expense', type: 'expense' });
+  const [receiptProcessing, setReceiptProcessing] = useState(false);
+  const [receiptStatus, setReceiptStatus] = useState(null); // { type: 'success' | 'error', message: string }
+  const cameraInputRef = useRef(null);
+  const uploadInputRef = useRef(null);
   const [schedForm, setSchedForm] = useState({ name: '', amount: '', startDate: todayStr, frequency: 'biweekly', category: 'Income', type: 'income' });
 
   useEffect(() => {
@@ -551,6 +825,14 @@ function HouseholdFinanceHub() {
   }, [savingsGoals]);
 
   useEffect(() => {
+    try { localStorage.setItem('hfh_accounts', JSON.stringify(accounts)); } catch (e) {}
+  }, [accounts]);
+
+  useEffect(() => {
+    try { localStorage.setItem('hfh_budgets', JSON.stringify(budgets)); } catch (e) {}
+  }, [budgets]);
+
+  useEffect(() => {
     try { localStorage.setItem('hfh_processed_occurrences', JSON.stringify(processedOccurrences)); } catch (e) {}
   }, [processedOccurrences]);
 
@@ -559,11 +841,15 @@ function HouseholdFinanceHub() {
       setTransactions([]);
       setScheduledItems([]);
       setSavingsGoals([]);
+      setAccounts([]);
+      setBudgets([]);
       setProcessedOccurrences([]);
       
       localStorage.removeItem('hfh_transactions');
       localStorage.removeItem('hfh_scheduled');
       localStorage.removeItem('hfh_savings');
+      localStorage.removeItem('hfh_accounts');
+      localStorage.removeItem('hfh_budgets');
       localStorage.removeItem('hfh_processed_occurrences');
       
       alert(t.resetSuccess);
@@ -592,7 +878,12 @@ function HouseholdFinanceHub() {
     const freq = item.frequency || 'monthly';
 
     if (freq === 'monthly') {
-      return tDay === sDay;
+      // Clamp to the last day of the target month so a bill started on the
+      // 29th/30th/31st still fires in shorter months (e.g. Feb) instead of
+      // silently never occurring.
+      const lastDayOfTargetMonth = new Date(Date.UTC(tYear, tMonth, 0)).getUTCDate();
+      const effectiveDay = Math.min(sDay, lastDayOfTargetMonth);
+      return tDay === effectiveDay;
     } 
     
     const diffDays = Math.round((target - start) / (1000 * 3600 * 24));
@@ -625,6 +916,7 @@ function HouseholdFinanceHub() {
     return { dateStr, actual, scheduled, actualIncome, actualExpense, schedIncome, schedExpense };
   };
 
+  // Scoped to whichever month is currently displayed in the Bills tab calendar.
   let pendingBills = 0;
   let pendingIncome = 0;
 
@@ -637,25 +929,107 @@ function HouseholdFinanceHub() {
   const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + Number(t.amount), 0);
   const totalExpenses = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + Number(t.amount), 0);
   const leftoverCash = totalIncome - totalExpenses;
+  // Bills-tab-only figure: pairs with the calendar month currently shown there.
   const projectedBalance = leftoverCash + pendingIncome - pendingBills;
   const totalProjectedExpense = totalExpenses + pendingBills;
 
+  // App-wide "Projected Cash" header stat: intentionally independent of which
+  // month the Bills tab calendar happens to be showing, so paging the calendar
+  // doesn't change a number visible on every tab. Uses a fixed rolling window
+  // from today instead.
+  const PROJECTION_WINDOW_DAYS = 30;
+  let upcomingBills = 0;
+  let upcomingIncome = 0;
+  for (let i = 0; i < PROJECTION_WINDOW_DAYS; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    const dStr = d.toISOString().split('T')[0];
+    scheduledItems.forEach(s => {
+      if (!doesItemOccurOnDate(s, dStr)) return;
+      if (processedOccurrences.includes(`${s.id}_${dStr}`)) return;
+      if (s.type === 'income') upcomingIncome += Number(s.amount);
+      else upcomingBills += Number(s.amount);
+    });
+  }
+  const globalProjectedBalance = leftoverCash + upcomingIncome - upcomingBills;
+
   const totalSaved = savingsGoals.reduce((acc, g) => acc + Number(g.current), 0);
   const spentPercentage = totalIncome > 0 ? Math.min(100, Math.round((totalExpenses / totalIncome) * 100)) : 0;
+
+  // Net Worth: manually-tracked account balances (checking, savings, investments,
+  // credit cards, loans, etc). This is intentionally separate from the
+  // transaction-based leftoverCash/projectedBalance figures above — those model
+  // cash flow from logged transactions, while accounts here model real-world
+  // balances the user enters directly, so the two aren't double-counted together.
+  const totalAssets = accounts.filter(a => a.classification === 'asset').reduce((acc, a) => acc + Number(a.balance), 0);
+  const totalLiabilities = accounts.filter(a => a.classification === 'liability').reduce((acc, a) => acc + Number(a.balance), 0);
+  const netWorth = totalAssets - totalLiabilities;
+
+  // Upcoming bill/income reminders: scans a fixed 7-day window from today
+  // (independent of whichever month the Bills tab calendar is showing) and
+  // lists individual unprocessed occurrences, soonest first.
+  const REMINDER_WINDOW_DAYS = 7;
+  const upcomingReminders = [];
+  for (let i = 0; i < REMINDER_WINDOW_DAYS; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    const dStr = d.toISOString().split('T')[0];
+    scheduledItems.forEach(s => {
+      if (!doesItemOccurOnDate(s, dStr)) return;
+      const instanceKey = `${s.id}_${dStr}`;
+      if (processedOccurrences.includes(instanceKey)) return;
+      upcomingReminders.push({ ...s, dateStr: dStr, daysUntil: i, instanceKey });
+    });
+  }
+  upcomingReminders.sort((a, b) => a.daysUntil - b.daysUntil);
+
+  const getDueLabel = (daysUntil) => {
+    if (daysUntil === 0) return t.dueToday;
+    if (daysUntil === 1) return t.dueTomorrow;
+    return `${t.dueIn} ${daysUntil} ${t.daysUnit}`;
+  };
+
+  // Budgets: monthly caps per expense category, checked against actual
+  // expense transactions logged in the current real-world calendar month
+  // (independent of whichever month the Bills tab calendar is browsing).
+  const now = new Date();
+  const curBudgetYear = now.getFullYear();
+  const curBudgetMonth = now.getMonth();
+  const currentMonthSpendByCategory = {};
+  transactions.forEach(tx => {
+    if (tx.type !== 'expense' || !tx.date) return;
+    const [txYear, txMonth] = tx.date.split('-').map(Number);
+    if (txYear === curBudgetYear && (txMonth - 1) === curBudgetMonth) {
+      currentMonthSpendByCategory[tx.category] = (currentMonthSpendByCategory[tx.category] || 0) + Number(tx.amount);
+    }
+  });
+
+  const budgetStatuses = budgets.map(b => {
+    const spent = currentMonthSpendByCategory[b.category] || 0;
+    const pct = b.limit > 0 ? (spent / b.limit) * 100 : 0;
+    let status = 'onTrack';
+    if (pct >= 100) status = 'over';
+    else if (pct >= 80) status = 'close';
+    return { ...b, spent, pct: Math.min(100, pct), rawPct: pct, status };
+  });
 
   const handleCreateSavingsGoal = (e) => {
     e.preventDefault();
     if (!goalForm.name || !goalForm.target) return;
 
+    const targetVal = parseFloat(goalForm.target);
+    const currentVal = parseFloat(goalForm.current) || 0;
+    if (isNaN(targetVal) || targetVal <= 0 || currentVal < 0) return;
+
     const newGoal = {
-      id: Date.now().toString(),
+      id: generateId(),
       name: goalForm.name,
-      target: parseFloat(goalForm.target),
-      current: parseFloat(goalForm.current) || 0,
+      target: targetVal,
+      current: currentVal,
       icon: 'fa-piggy-bank'
     };
 
-    setSavingsGoals([...savingsGoals, newGoal]);
+    setSavingsGoals(prev => [...prev, newGoal]);
     setGoalForm({ name: '', target: '', current: '' });
   };
 
@@ -670,31 +1044,31 @@ function HouseholdFinanceHub() {
     if (!targetGoal) return;
 
     if (activeGoalModal.action === 'deposit') {
-      setSavingsGoals(savingsGoals.map(g => g.id === targetGoal.id ? { ...g, current: g.current + amount } : g));
-      
-      setTransactions([{
-        id: Date.now().toString(),
+      setSavingsGoals(prev => prev.map(g => g.id === targetGoal.id ? { ...g, current: g.current + amount } : g));
+
+      setTransactions(prev => [{
+        id: generateId(),
         description: `${lang === 'ht' ? 'Transfè nan Ekonomi:' : 'Savings Transfer:'} ${targetGoal.name}`,
         amount: amount,
         category: 'Savings',
         type: 'expense',
         date: new Date().toISOString().split('T')[0]
-      }, ...transactions]);
+      }, ...prev]);
     } else if (activeGoalModal.action === 'borrow') {
       if (amount > targetGoal.current) {
         alert(t.borrowError);
         return;
       }
-      setSavingsGoals(savingsGoals.map(g => g.id === targetGoal.id ? { ...g, current: g.current - amount } : g));
-      
-      setTransactions([{
-        id: Date.now().toString(),
+      setSavingsGoals(prev => prev.map(g => g.id === targetGoal.id ? { ...g, current: g.current - amount } : g));
+
+      setTransactions(prev => [{
+        id: generateId(),
         description: `${lang === 'ht' ? 'Retire nan' : 'Borrowed from'} ${targetGoal.name}`,
         amount: amount,
-        category: 'Savings Transfer',
+        category: 'Savings',
         type: 'income',
         date: new Date().toISOString().split('T')[0]
-      }, ...transactions]);
+      }, ...prev]);
     }
 
     setActiveGoalModal(null);
@@ -702,7 +1076,133 @@ function HouseholdFinanceHub() {
   };
 
   const handleDeleteGoal = (id) => {
-    setSavingsGoals(savingsGoals.filter(g => g.id !== id));
+    setSavingsGoals(prev => prev.filter(g => g.id !== id));
+  };
+
+  const ACCOUNT_TYPES_BY_CLASSIFICATION = {
+    asset: ['checking', 'savings', 'cash', 'investment', 'other'],
+    liability: ['credit', 'loan', 'other']
+  };
+
+  const accountTypeLabel = (type) => {
+    switch (type) {
+      case 'checking': return t.accountTypeChecking;
+      case 'savings': return t.accountTypeSavings;
+      case 'cash': return t.accountTypeCash;
+      case 'investment': return t.accountTypeInvestment;
+      case 'credit': return t.accountTypeCredit;
+      case 'loan': return t.accountTypeLoan;
+      default: return t.accountTypeOther;
+    }
+  };
+
+  const handleSaveAccount = (e) => {
+    e.preventDefault();
+    if (!accountForm.name || !accountForm.balance) return;
+
+    const balanceVal = Math.abs(parseFloat(accountForm.balance));
+    if (isNaN(balanceVal)) return;
+
+    if (editingAccountId) {
+      setAccounts(prev => prev.map(a => a.id === editingAccountId ? {
+        ...a,
+        name: accountForm.name,
+        balance: balanceVal,
+        classification: accountForm.classification,
+        type: accountForm.type
+      } : a));
+      setEditingAccountId(null);
+    } else {
+      const newAccount = {
+        id: generateId(),
+        name: accountForm.name,
+        balance: balanceVal,
+        classification: accountForm.classification,
+        type: accountForm.type
+      };
+      setAccounts(prev => [...prev, newAccount]);
+    }
+    setAccountForm({ name: '', balance: '', classification: 'asset', type: 'checking' });
+  };
+
+  const handleEditAccountClick = (account) => {
+    setEditingAccountId(account.id);
+    setAccountForm({
+      name: account.name,
+      balance: account.balance,
+      classification: account.classification,
+      type: account.type
+    });
+  };
+
+  const handleCancelAccountEdit = () => {
+    setEditingAccountId(null);
+    setAccountForm({ name: '', balance: '', classification: 'asset', type: 'checking' });
+  };
+
+  const handleDeleteAccount = (id) => {
+    setAccounts(prev => prev.filter(a => a.id !== id));
+    if (editingAccountId === id) handleCancelAccountEdit();
+  };
+
+  const handleAccountClassificationChange = (classification) => {
+    setAccountForm({
+      ...accountForm,
+      classification,
+      type: ACCOUNT_TYPES_BY_CLASSIFICATION[classification][0]
+    });
+  };
+
+  const BUDGET_CATEGORIES = ['General Expense', 'Credit Card', 'Subscription', 'Utilities', 'Savings'];
+
+  const budgetCategoryLabel = (category) => {
+    switch (category) {
+      case 'General Expense': return t.generalExpense;
+      case 'Credit Card': return t.creditCard;
+      case 'Subscription': return t.subscription;
+      case 'Utilities': return t.utilities;
+      case 'Savings': return t.savingsTransfer;
+      default: return category;
+    }
+  };
+
+  const handleSaveBudget = (e) => {
+    e.preventDefault();
+    if (!budgetForm.category || !budgetForm.limit) return;
+
+    const limitVal = Math.abs(parseFloat(budgetForm.limit));
+    if (isNaN(limitVal) || limitVal <= 0) return;
+
+    if (editingBudgetId) {
+      setBudgets(prev => prev.map(b => b.id === editingBudgetId ? { ...b, category: budgetForm.category, limit: limitVal } : b));
+      setEditingBudgetId(null);
+    } else {
+      // One budget per category — adding a category that already has a
+      // budget updates its limit instead of creating a duplicate row.
+      setBudgets(prev => {
+        const existing = prev.find(b => b.category === budgetForm.category);
+        if (existing) {
+          return prev.map(b => b.id === existing.id ? { ...b, limit: limitVal } : b);
+        }
+        return [...prev, { id: generateId(), category: budgetForm.category, limit: limitVal }];
+      });
+    }
+    setBudgetForm({ category: 'General Expense', limit: '' });
+  };
+
+  const handleEditBudgetClick = (budget) => {
+    setEditingBudgetId(budget.id);
+    setBudgetForm({ category: budget.category, limit: budget.limit });
+  };
+
+  const handleCancelBudgetEdit = () => {
+    setEditingBudgetId(null);
+    setBudgetForm({ category: 'General Expense', limit: '' });
+  };
+
+  const handleDeleteBudget = (id) => {
+    setBudgets(prev => prev.filter(b => b.id !== id));
+    if (editingBudgetId === id) handleCancelBudgetEdit();
   };
 
   const handleExportCSV = () => {
@@ -747,10 +1247,10 @@ function HouseholdFinanceHub() {
 
       const importedTransactions = [];
       for (let i = 1; i < lines.length; i++) {
-        const cols = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || lines[i].split(',');
+        const cols = parseCSVLine(lines[i]);
         if (cols && cols.length >= 2) {
-          const cleanCol = (col) => col ? col.replace(/^"|"$/g, '').trim() : '';
-          
+          const cleanCol = (col) => col ? col.trim() : '';
+
           const description = cleanCol(cols[0]) || 'Imported Entry';
           const amountVal = parseFloat(cleanCol(cols[1]).replace(/[\$,]/g, ''));
           const category = cleanCol(cols[2]) || (amountVal < 0 ? 'General Expense' : 'Income');
@@ -767,7 +1267,7 @@ function HouseholdFinanceHub() {
 
           if (!isNaN(amountVal)) {
             importedTransactions.push({
-              id: Date.now().toString() + "_" + i,
+              id: generateId(),
               description,
               amount: Math.abs(amountVal),
               category,
@@ -789,31 +1289,138 @@ function HouseholdFinanceHub() {
     reader.readAsText(file);
   };
 
+  const ALLOWED_RECEIPT_CATEGORIES = ['General Expense', 'Credit Card', 'Subscription', 'Utilities', 'Savings'];
+  const [receiptDate, setReceiptDate] = useState(null);
+
+  const handleReceiptFile = (e) => {
+    const file = e.target.files[0];
+    e.target.value = ''; // allow re-selecting the same file next time
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setReceiptStatus({ type: 'error', message: t.receiptError });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      const [header, base64Data] = dataUrl.split(',');
+      const mediaTypeMatch = header.match(/data:(.*?);base64/);
+      const mediaType = mediaTypeMatch ? mediaTypeMatch[1] : 'image/jpeg';
+      processReceiptImage(base64Data, mediaType);
+    };
+    reader.onerror = () => {
+      setReceiptStatus({ type: 'error', message: t.receiptScanFailed });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const processReceiptImage = async (base64Data, mediaType) => {
+    setReceiptProcessing(true);
+    setReceiptStatus(null);
+
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 1000,
+          messages: [
+            {
+              role: "user",
+              content: [
+                { type: "image", source: { type: "base64", media_type: mediaType, data: base64Data } },
+                {
+                  type: "text",
+                  text: `You are reading a photo of a purchase receipt for a personal finance app. Respond with ONLY a raw JSON object - no markdown fences, no extra text - in exactly this shape:
+{"description": string, "amount": number or null, "date": "YYYY-MM-DD" or null, "category": one of "General Expense", "Credit Card", "Subscription", "Utilities", "Savings"}
+
+Rules:
+- "description" is the merchant/store name (or a short purchase description if no merchant name is visible), 40 characters max.
+- "amount" is the final total paid, as a plain number with no currency symbol. If you cannot confidently identify the total, use null.
+- "date" is the purchase date shown on the receipt in YYYY-MM-DD format. If no date is visible, use null. Never use a future date.
+- "category" must be exactly one of the four allowed values above, chosen as your best guess for what kind of purchase this is. Default to "General Expense" if unsure.
+- If the image is not a receipt at all, still return the JSON shape with "amount": null and "description": "Unrecognized receipt".`
+                }
+              ]
+            }
+          ]
+        })
+      });
+
+      const data = await response.json();
+      const textBlock = (data.content || []).find(b => b.type === 'text');
+      if (!textBlock) throw new Error('No text response from receipt scan');
+
+      const cleaned = textBlock.text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleaned);
+
+      const amountVal = parseFloat(parsed.amount);
+      if (!parsed.amount || isNaN(amountVal) || amountVal <= 0) {
+        setReceiptStatus({ type: 'error', message: t.receiptError });
+        setReceiptProcessing(false);
+        return;
+      }
+
+      const category = ALLOWED_RECEIPT_CATEGORIES.includes(parsed.category) ? parsed.category : 'General Expense';
+      const description = (parsed.description || '').toString().trim().slice(0, 60) || 'Receipt';
+
+      let validDate = null;
+      if (parsed.date && /^\d{4}-\d{2}-\d{2}$/.test(parsed.date)) {
+        const parsedDate = new Date(parsed.date + 'T00:00:00');
+        if (!isNaN(parsedDate.getTime()) && parsedDate <= new Date()) {
+          validDate = parsed.date;
+        }
+      }
+      setReceiptDate(validDate);
+
+      setEditingId(null);
+      setTransForm({
+        description,
+        amount: amountVal.toFixed(2),
+        category,
+        type: 'expense'
+      });
+      setReceiptStatus({ type: 'success', message: t.receiptProcessed });
+    } catch (err) {
+      setReceiptStatus({ type: 'error', message: t.receiptScanFailed });
+    } finally {
+      setReceiptProcessing(false);
+    }
+  };
+
   const handleSaveTransaction = (e) => {
     e.preventDefault();
     if (!transForm.description || !transForm.amount) return;
 
+    const amountVal = Math.abs(parseFloat(transForm.amount));
+    if (isNaN(amountVal) || amountVal <= 0) return;
+
     if (editingId) {
-      setTransactions(transactions.map(t => t.id === editingId ? {
+      setTransactions(prev => prev.map(t => t.id === editingId ? {
         ...t,
         description: transForm.description,
-        amount: parseFloat(transForm.amount),
+        amount: amountVal,
         category: transForm.category,
         type: transForm.type
       } : t));
       setEditingId(null);
     } else {
       const newEntry = {
-        id: Date.now().toString(),
+        id: generateId(),
         description: transForm.description,
-        amount: parseFloat(transForm.amount),
+        amount: amountVal,
         category: transForm.category,
         type: transForm.type,
-        date: new Date().toISOString().split('T')[0]
+        date: receiptDate || new Date().toISOString().split('T')[0]
       };
-      setTransactions([newEntry, ...transactions]);
+      setTransactions(prev => [newEntry, ...prev]);
     }
     setTransForm({ description: '', amount: '', category: 'General Expense', type: 'expense' });
+    setReceiptDate(null);
+    setReceiptStatus(null);
   };
 
   const handleEditClick = (item) => {
@@ -824,15 +1431,19 @@ function HouseholdFinanceHub() {
       category: item.category,
       type: item.type
     });
+    setReceiptDate(null);
+    setReceiptStatus(null);
   };
 
   const handleCancelEdit = () => {
     setEditingId(null);
     setTransForm({ description: '', amount: '', category: 'General Expense', type: 'expense' });
+    setReceiptDate(null);
+    setReceiptStatus(null);
   };
 
   const handleDeleteTransaction = (id) => {
-    setTransactions(transactions.filter(t => t.id !== id));
+    setTransactions(prev => prev.filter(t => t.id !== id));
     if (editingId === id) handleCancelEdit();
   };
 
@@ -840,11 +1451,14 @@ function HouseholdFinanceHub() {
     e.preventDefault();
     if (!schedForm.name || !schedForm.amount) return;
 
+    const amountVal = Math.abs(parseFloat(schedForm.amount));
+    if (isNaN(amountVal) || amountVal <= 0) return;
+
     if (editingSchedId) {
-      setScheduledItems(scheduledItems.map(s => s.id === editingSchedId ? {
+      setScheduledItems(prev => prev.map(s => s.id === editingSchedId ? {
         ...s,
         name: schedForm.name,
-        amount: parseFloat(schedForm.amount),
+        amount: amountVal,
         startDate: schedForm.startDate,
         frequency: schedForm.frequency,
         category: schedForm.type === 'income' ? 'Income' : schedForm.category,
@@ -853,15 +1467,15 @@ function HouseholdFinanceHub() {
       setEditingSchedId(null);
     } else {
       const newItem = {
-        id: Date.now().toString(),
+        id: generateId(),
         name: schedForm.name,
-        amount: parseFloat(schedForm.amount),
+        amount: amountVal,
         startDate: schedForm.startDate,
         frequency: schedForm.frequency,
         category: schedForm.type === 'income' ? 'Income' : schedForm.category,
         type: schedForm.type
       };
-      setScheduledItems([...scheduledItems, newItem]);
+      setScheduledItems(prev => [...prev, newItem]);
     }
     setSchedForm({ name: '', amount: '', startDate: todayStr, frequency: 'biweekly', category: 'Income', type: 'income' });
   };
@@ -888,7 +1502,7 @@ function HouseholdFinanceHub() {
     if (processedOccurrences.includes(instanceKey)) return;
     
     const newTx = {
-      id: Date.now().toString(),
+      id: generateId(),
       description: item.name,
       amount: item.amount,
       category: item.category,
@@ -914,7 +1528,7 @@ function HouseholdFinanceHub() {
   };
 
   const handleDeleteScheduledItem = (id) => {
-    setScheduledItems(scheduledItems.filter(s => s.id !== id));
+    setScheduledItems(prev => prev.filter(s => s.id !== id));
     if (editingSchedId === id) handleCancelSchedEdit();
   };
 
@@ -970,18 +1584,18 @@ function HouseholdFinanceHub() {
         </header>
 
         {/* Metric Cards Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
-          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-indigo-500">
-            <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.leftoverCash}</span>
-            <div className={`text-base sm:text-xl font-black truncate ${leftoverCash >= 0 ? 'text-indigo-300' : 'text-rose-400'}`}>
-              ${leftoverCash.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
-          </div>
-
+        <div className="grid grid-cols-2 lg:grid-cols-6 gap-2.5 sm:gap-3">
           <div className="glass-card rounded-2xl p-3 border-l-4 border-l-emerald-500">
             <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.totalIncome}</span>
             <div className="text-base sm:text-xl font-black text-emerald-400 truncate">
               +${totalIncome.toLocaleString('en-US', { minimumFractionDigits: 0 })}
+            </div>
+          </div>
+
+          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-indigo-500">
+            <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.leftoverCash}</span>
+            <div className={`text-base sm:text-xl font-black truncate ${leftoverCash >= 0 ? 'text-indigo-300' : 'text-rose-400'}`}>
+              ${leftoverCash.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
           </div>
 
@@ -994,15 +1608,22 @@ function HouseholdFinanceHub() {
 
           <div className="glass-card rounded-2xl p-3 border-l-4 border-l-cyan-500">
             <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.projectedCash}</span>
-            <div className={`text-base sm:text-xl font-black truncate ${projectedBalance >= 0 ? 'text-cyan-300' : 'text-rose-400'}`}>
-              ${projectedBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            <div className={`text-base sm:text-xl font-black truncate ${globalProjectedBalance >= 0 ? 'text-cyan-300' : 'text-rose-400'}`}>
+              ${globalProjectedBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
           </div>
 
-          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-purple-500 col-span-2 lg:col-span-1">
+          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-purple-500">
             <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.totalSaved}</span>
             <div className="text-base sm:text-xl font-black text-purple-300 truncate">
               ${totalSaved.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+          </div>
+
+          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-amber-500">
+            <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.netWorth}</span>
+            <div className={`text-base sm:text-xl font-black truncate ${netWorth >= 0 ? 'text-amber-300' : 'text-rose-400'}`}>
+              ${netWorth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
           </div>
         </div>
@@ -1032,6 +1653,103 @@ function HouseholdFinanceHub() {
                 <CashFlowChart income={totalIncome} expenses={totalExpenses} lang={lang} />
               </div>
 
+              <div className="glass-card p-3.5 sm:p-4 rounded-2xl">
+                <h2 className="text-xs sm:text-sm font-bold flex items-center gap-2 border-b border-slate-800 pb-2 mb-3">
+                  <i className="fa-solid fa-chart-line text-cyan-400"></i> {t.monthlyTrend}
+                </h2>
+                <MonthlyTrendChart transactions={transactions} lang={lang} />
+              </div>
+
+              <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
+                <h2 className="text-xs sm:text-sm font-bold flex items-center justify-between border-b border-slate-800 pb-2">
+                  <span><i className="fa-solid fa-sliders text-violet-400 mr-1.5"></i> {t.budgets}</span>
+                </h2>
+
+                <div className="space-y-3">
+                  {budgetStatuses.length === 0 ? (
+                    <div className="text-center py-3 text-xs text-slate-500">{t.noBudgets}</div>
+                  ) : (
+                    budgetStatuses.map(b => {
+                      const barColor = b.status === 'over' ? 'bg-rose-500' : b.status === 'close' ? 'bg-amber-500' : 'bg-emerald-500';
+                      const statusColor = b.status === 'over' ? 'text-rose-400' : b.status === 'close' ? 'text-amber-400' : 'text-emerald-400';
+                      const statusLabel = b.status === 'over' ? t.overBudget : b.status === 'close' ? t.closeToBudget : t.onTrack;
+                      return (
+                        <div key={b.id} className="space-y-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-xs font-semibold text-slate-100 truncate">{budgetCategoryLabel(b.category)}</span>
+                            <div className="flex items-center gap-1 shrink-0">
+                              <span className="text-[10px] text-slate-400">
+                                ${b.spent.toLocaleString('en-US', { minimumFractionDigits: 0 })} {t.of} ${Number(b.limit).toLocaleString('en-US', { minimumFractionDigits: 0 })}{t.perMonth}
+                              </span>
+                              <button onClick={() => handleEditBudgetClick(b)} className="text-slate-500 hover:text-amber-400 p-1">
+                                <i className="fa-solid fa-pen text-[10px]"></i>
+                              </button>
+                              <button onClick={() => handleDeleteBudget(b.id)} className="text-slate-600 hover:text-rose-400 p-1">
+                                <i className="fa-solid fa-trash-can text-[10px]"></i>
+                              </button>
+                            </div>
+                          </div>
+                          <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                            <div className={`h-2 rounded-full transition-all ${barColor}`} style={{ width: `${b.pct}%` }}></div>
+                          </div>
+                          {b.status !== 'onTrack' && (
+                            <span className={`text-[10px] font-bold ${statusColor}`}>
+                              <i className="fa-solid fa-triangle-exclamation mr-1"></i>{statusLabel}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                <form onSubmit={handleSaveBudget} className="pt-2 border-t border-slate-800 space-y-2.5">
+                  {editingBudgetId ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-slate-200">{budgetCategoryLabel(budgetForm.category)}</span>
+                      <button type="button" onClick={handleCancelBudgetEdit} className="text-xs text-slate-400 hover:text-white p-1">
+                        {t.cancel}
+                      </button>
+                    </div>
+                  ) : (
+                    BUDGET_CATEGORIES.filter(c => !budgets.some(b => b.category === c)).length === 0 ? null : (
+                      <select
+                        value={budgetForm.category}
+                        onChange={(e) => setBudgetForm({ ...budgetForm, category: e.target.value })}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-violet-500"
+                      >
+                        {BUDGET_CATEGORIES.filter(c => !budgets.some(b => b.category === c)).map(c => (
+                          <option key={c} value={c}>{budgetCategoryLabel(c)}</option>
+                        ))}
+                      </select>
+                    )
+                  )}
+
+                  {(editingBudgetId || BUDGET_CATEGORIES.filter(c => !budgets.some(b => b.category === c)).length > 0) && (
+                    <div className="flex gap-2">
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0.01"
+                        placeholder={t.budgetLimitPlaceholder}
+                        value={budgetForm.limit}
+                        onChange={(e) => setBudgetForm({ ...budgetForm, limit: e.target.value })}
+                        className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-violet-500"
+                        required
+                      />
+                      <button
+                        type="submit"
+                        className={`px-4 text-white font-bold rounded-xl text-xs shadow-md transition-all ${
+                          editingBudgetId ? 'bg-amber-600 active:bg-amber-700' : 'bg-violet-600 active:bg-violet-700'
+                        }`}
+                      >
+                        {editingBudgetId ? t.updateBudget : t.addBudget}
+                      </button>
+                    </div>
+                  )}
+                </form>
+              </div>
+
               <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
                 <h2 className="text-xs sm:text-sm font-bold flex items-center justify-between border-b border-slate-800 pb-2">
                   <span>
@@ -1044,6 +1762,60 @@ function HouseholdFinanceHub() {
                     </button>
                   )}
                 </h2>
+
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      disabled={receiptProcessing}
+                      onClick={() => cameraInputRef.current && cameraInputRef.current.click()}
+                      className="py-2.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-200 border border-slate-700 hover:border-indigo-500 active:bg-slate-700 transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
+                    >
+                      <i className="fa-solid fa-camera text-indigo-400"></i> {t.takePhoto}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={receiptProcessing}
+                      onClick={() => uploadInputRef.current && uploadInputRef.current.click()}
+                      className="py-2.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-200 border border-slate-700 hover:border-indigo-500 active:bg-slate-700 transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
+                    >
+                      <i className="fa-solid fa-receipt text-indigo-400"></i> {t.uploadReceipt}
+                    </button>
+                  </div>
+
+                  <input
+                    ref={cameraInputRef}
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleReceiptFile}
+                    className="hidden"
+                  />
+                  <input
+                    ref={uploadInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleReceiptFile}
+                    className="hidden"
+                  />
+
+                  {receiptProcessing && (
+                    <div className="flex items-center justify-center gap-2 py-2 text-xs text-indigo-300">
+                      <i className="fa-solid fa-circle-notch fa-spin"></i> {t.processingReceipt}
+                    </div>
+                  )}
+
+                  {!receiptProcessing && receiptStatus && (
+                    <div className={`flex items-center gap-2 py-2 px-3 rounded-xl text-[11px] font-semibold ${
+                      receiptStatus.type === 'success'
+                        ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20'
+                        : 'bg-rose-500/10 text-rose-300 border border-rose-500/20'
+                    }`}>
+                      <i className={`fa-solid ${receiptStatus.type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation'}`}></i>
+                      <span>{receiptStatus.message}</span>
+                    </div>
+                  )}
+                </div>
 
                 <form onSubmit={handleSaveTransaction} className="space-y-2.5">
                   <div className="grid grid-cols-2 gap-2">
@@ -1080,6 +1852,7 @@ function HouseholdFinanceHub() {
                     <input
                       type="number"
                       step="0.01"
+                      min="0.01"
                       placeholder={t.amountPlaceholder}
                       value={transForm.amount}
                       onChange={(e) => setTransForm({ ...transForm, amount: e.target.value })}
@@ -1112,45 +1885,88 @@ function HouseholdFinanceHub() {
               </div>
             </div>
 
-            <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3 h-fit">
-              <h2 className="text-xs sm:text-sm font-bold flex items-center justify-between border-b border-slate-800 pb-2">
-                <span><i className="fa-solid fa-clock-rotate-left text-indigo-400 mr-1.5"></i> {t.recentActivity}</span>
-                <button onClick={() => setActiveTab('transactions')} className="text-xs text-indigo-400 font-semibold p-1">
-                  {t.seeAll}
-                </button>
-              </h2>
+            <div className="space-y-4">
+              <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
+                <h2 className="text-xs sm:text-sm font-bold flex items-center justify-between border-b border-slate-800 pb-2">
+                  <span><i className="fa-solid fa-bell text-amber-400 mr-1.5"></i> {t.upcomingReminders}</span>
+                  <button onClick={() => setActiveTab('bills')} className="text-xs text-indigo-400 font-semibold p-1">
+                    {t.seeAll}
+                  </button>
+                </h2>
 
-              <div className="space-y-2">
-                {transactions.length === 0 ? (
-                  <div className="text-center py-4 text-xs text-slate-500">{t.noTransactions}</div>
-                ) : (
-                  transactions.slice(0, 6).map(item => (
-                    <div key={item.id} className="p-2.5 sm:p-3 bg-slate-900/70 rounded-xl border border-slate-800 flex items-center justify-between">
-                      <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                        <div className={`w-7 h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-bold ${
-                          item.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
-                        }`}>
-                          <i className={`fa-solid ${item.type === 'income' ? 'fa-arrow-down' : 'fa-arrow-up'}`}></i>
+                <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
+                  {upcomingReminders.length === 0 ? (
+                    <div className="text-center py-4 text-xs text-slate-500">{t.noUpcomingReminders}</div>
+                  ) : (
+                    upcomingReminders.slice(0, 6).map(item => (
+                      <div key={item.instanceKey} className="p-2.5 bg-slate-900/70 rounded-xl border border-slate-800 flex items-center justify-between gap-2">
+                        <div className="min-w-0 pr-1">
+                          <div className="font-semibold text-xs text-slate-100 truncate">{item.name}</div>
+                          <div className={`text-[10px] font-bold truncate ${item.daysUntil === 0 ? 'text-rose-400' : 'text-slate-400'}`}>
+                            {getDueLabel(item.daysUntil)}
+                          </div>
                         </div>
-                        <div className="min-w-0">
-                          <div className="font-semibold text-xs text-slate-100 truncate">{item.description}</div>
-                          <div className="text-[10px] text-slate-400 truncate">{item.category}</div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span className={`font-bold text-xs ${item.type === 'income' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                            {item.type === 'income' ? '+' : '-'}${Number(item.amount).toFixed(2)}
+                          </span>
+                          <button
+                            onClick={() => handleProcessScheduledOccurrence(item, item.dateStr)}
+                            className={`px-2 py-1 border rounded-lg text-[10px] font-bold transition-opacity ${
+                              item.type === 'income'
+                                ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/30'
+                                : 'bg-amber-500/20 text-amber-400 border-amber-500/30 hover:bg-amber-500/30'
+                            }`}
+                          >
+                            {item.type === 'income' ? t.receive : t.pay}
+                          </button>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <span className={`font-bold text-xs ${item.type === 'income' ? 'text-emerald-400' : 'text-slate-200'}`}>
-                          {item.type === 'income' ? '+' : '-'}${Number(item.amount).toFixed(2)}
-                        </span>
-                        <button onClick={() => handleEditClick(item)} className="text-slate-500 hover:text-amber-400 p-1.5">
-                          <i className="fa-solid fa-pen text-xs"></i>
-                        </button>
-                        <button onClick={() => handleDeleteTransaction(item.id)} className="text-slate-500 hover:text-rose-400 p-1.5">
-                          <i className="fa-solid fa-trash-can text-xs"></i>
-                        </button>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3 h-fit">
+                <h2 className="text-xs sm:text-sm font-bold flex items-center justify-between border-b border-slate-800 pb-2">
+                  <span><i className="fa-solid fa-clock-rotate-left text-indigo-400 mr-1.5"></i> {t.recentActivity}</span>
+                  <button onClick={() => setActiveTab('transactions')} className="text-xs text-indigo-400 font-semibold p-1">
+                    {t.seeAll}
+                  </button>
+                </h2>
+
+                <div className="space-y-2">
+                  {transactions.length === 0 ? (
+                    <div className="text-center py-4 text-xs text-slate-500">{t.noTransactions}</div>
+                  ) : (
+                    transactions.slice(0, 6).map(item => (
+                      <div key={item.id} className="p-2.5 sm:p-3 bg-slate-900/70 rounded-xl border border-slate-800 flex items-center justify-between">
+                        <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                          <div className={`w-7 h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-bold ${
+                            item.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
+                          }`}>
+                            <i className={`fa-solid ${item.type === 'income' ? 'fa-arrow-down' : 'fa-arrow-up'}`}></i>
+                          </div>
+                          <div className="min-w-0">
+                            <div className="font-semibold text-xs text-slate-100 truncate">{item.description}</div>
+                            <div className="text-[10px] text-slate-400 truncate">{item.category}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span className={`font-bold text-xs ${item.type === 'income' ? 'text-emerald-400' : 'text-slate-200'}`}>
+                            {item.type === 'income' ? '+' : '-'}${Number(item.amount).toFixed(2)}
+                          </span>
+                          <button onClick={() => handleEditClick(item)} className="text-slate-500 hover:text-amber-400 p-1.5">
+                            <i className="fa-solid fa-pen text-xs"></i>
+                          </button>
+                          <button onClick={() => handleDeleteTransaction(item.id)} className="text-slate-500 hover:text-rose-400 p-1.5">
+                            <i className="fa-solid fa-trash-can text-xs"></i>
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))
-                )}
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -1261,11 +2077,11 @@ function HouseholdFinanceHub() {
               <div className="grid grid-cols-2 gap-3 pt-1">
                 <div>
                   <span className="text-[10px] text-slate-400 uppercase font-bold block">{t.currentSavings}</span>
-                  <span className="text-lg font-black text-white">${totalSaved.toLocaleString()}</span>
+                  <span className="text-lg font-black text-white">${totalSaved.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
                 <div>
                   <span className="text-[10px] text-slate-400 uppercase font-bold block">{t.leftoverCash}</span>
-                  <span className="text-lg font-black text-indigo-300">${leftoverCash.toLocaleString()}</span>
+                  <span className="text-lg font-black text-indigo-300">${leftoverCash.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
               </div>
             </div>
@@ -1283,6 +2099,8 @@ function HouseholdFinanceHub() {
                 />
                 <input
                   type="number"
+                  step="0.01"
+                  min="0.01"
                   placeholder={t.targetAmountPlaceholder}
                   value={goalForm.target}
                   onChange={(e) => setGoalForm({ ...goalForm, target: e.target.value })}
@@ -1291,6 +2109,8 @@ function HouseholdFinanceHub() {
                 />
                 <input
                   type="number"
+                  step="0.01"
+                  min="0"
                   placeholder={t.startingAmountPlaceholder}
                   value={goalForm.current}
                   onChange={(e) => setGoalForm({ ...goalForm, current: e.target.value })}
@@ -1322,7 +2142,7 @@ function HouseholdFinanceHub() {
                           </div>
                           <div>
                             <h3 className="text-xs sm:text-sm font-bold text-white">{goal.name}</h3>
-                            <p className="text-[10px] text-slate-400">${goal.current.toLocaleString()} {t.of} ${goal.target.toLocaleString()}</p>
+                            <p className="text-[10px] text-slate-400">${goal.current.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {t.of} ${goal.target.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                           </div>
                         </div>
                         <button onClick={() => handleDeleteGoal(goal.id)} className="text-slate-600 hover:text-rose-400 p-1">
@@ -1370,6 +2190,7 @@ function HouseholdFinanceHub() {
                     <input
                       type="number"
                       step="0.01"
+                      min="0.01"
                       placeholder={t.amountPlaceholder}
                       value={modalAmount}
                       onChange={(e) => setModalAmount(e.target.value)}
@@ -1398,6 +2219,151 @@ function HouseholdFinanceHub() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Tab: Net Worth */}
+        {activeTab === 'networth' && (
+          <div className="space-y-4">
+            <div className="glass-card p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-900/30 via-slate-900/40 to-slate-900/60 border border-amber-500/20 space-y-2">
+              <h2 className="text-xs sm:text-sm font-bold flex items-center gap-2 text-amber-300">
+                <i className="fa-solid fa-scale-balanced"></i> {t.netWorth}
+              </h2>
+              <div className="grid grid-cols-3 gap-3 pt-1">
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase font-bold block">{t.netWorth}</span>
+                  <span className={`text-base sm:text-lg font-black ${netWorth >= 0 ? 'text-amber-300' : 'text-rose-400'}`}>
+                    ${netWorth.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase font-bold block">{t.totalAssets}</span>
+                  <span className="text-base sm:text-lg font-black text-emerald-400">
+                    ${totalAssets.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase font-bold block">{t.totalLiabilities}</span>
+                  <span className="text-base sm:text-lg font-black text-rose-400">
+                    ${totalLiabilities.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
+              <h2 className="text-xs sm:text-sm font-bold flex items-center justify-between border-b border-slate-800 pb-2">
+                <span>
+                  <i className={`fa-solid ${editingAccountId ? 'fa-pen-to-square text-amber-400' : 'fa-plus-circle text-amber-400'} mr-1.5`}></i>
+                  {editingAccountId ? t.editAccount : t.addAccount}
+                </span>
+                {editingAccountId && (
+                  <button onClick={handleCancelAccountEdit} className="text-xs text-slate-400 hover:text-white p-1">
+                    {t.cancel}
+                  </button>
+                )}
+              </h2>
+
+              <form onSubmit={handleSaveAccount} className="space-y-2.5">
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleAccountClassificationChange('asset')}
+                    className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                      accountForm.classification === 'asset' ? 'bg-emerald-500 text-white shadow-md' : 'bg-slate-800 text-slate-400'
+                    }`}
+                  >
+                    {t.asset}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAccountClassificationChange('liability')}
+                    className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                      accountForm.classification === 'liability' ? 'bg-rose-500 text-white shadow-md' : 'bg-slate-800 text-slate-400'
+                    }`}
+                  >
+                    {t.liability}
+                  </button>
+                </div>
+
+                <input
+                  type="text"
+                  placeholder={t.accountNamePlaceholder}
+                  value={accountForm.name}
+                  onChange={(e) => setAccountForm({ ...accountForm, name: e.target.value })}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500"
+                  required
+                />
+
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder={t.accountBalancePlaceholder}
+                    value={accountForm.balance}
+                    onChange={(e) => setAccountForm({ ...accountForm, balance: e.target.value })}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500"
+                    required
+                  />
+                  <select
+                    value={accountForm.type}
+                    onChange={(e) => setAccountForm({ ...accountForm, type: e.target.value })}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-amber-500"
+                  >
+                    {ACCOUNT_TYPES_BY_CLASSIFICATION[accountForm.classification].map(type => (
+                      <option key={type} value={type}>{accountTypeLabel(type)}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  className={`w-full text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 ${
+                    editingAccountId ? 'bg-amber-600 active:bg-amber-700' : 'bg-amber-600 active:bg-amber-700'
+                  }`}
+                >
+                  <i className="fa-solid fa-check"></i> {editingAccountId ? t.updateAccount : t.saveAccount}
+                </button>
+              </form>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {accounts.length === 0 ? (
+                <div className="col-span-2 glass-card p-6 text-center text-xs text-slate-500 rounded-2xl">
+                  {t.noAccounts}
+                </div>
+              ) : (
+                accounts.map(account => (
+                  <div key={account.id} className="glass-card p-3.5 rounded-2xl space-y-2 relative border border-slate-800">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center gap-2.5">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm ${
+                          account.classification === 'liability' ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'
+                        }`}>
+                          <i className={`fa-solid ${account.classification === 'liability' ? 'fa-credit-card' : 'fa-building-columns'}`}></i>
+                        </div>
+                        <div>
+                          <h3 className="text-xs sm:text-sm font-bold text-white">{account.name}</h3>
+                          <p className="text-[10px] text-slate-400">{accountTypeLabel(account.type)}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button onClick={() => handleEditAccountClick(account)} className="text-slate-500 hover:text-amber-400 p-1.5">
+                          <i className="fa-solid fa-pen text-xs"></i>
+                        </button>
+                        <button onClick={() => handleDeleteAccount(account.id)} className="text-slate-600 hover:text-rose-400 p-1.5">
+                          <i className="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div className={`text-base font-black ${account.classification === 'liability' ? 'text-rose-400' : 'text-emerald-400'}`}>
+                      {account.classification === 'liability' ? '-' : ''}${Number(account.balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         )}
 
@@ -1549,6 +2515,7 @@ function HouseholdFinanceHub() {
                   <input
                     type="number"
                     step="0.01"
+                    min="0.01"
                     placeholder={t.amountPlaceholder}
                     value={schedForm.amount}
                     onChange={(e) => setSchedForm({ ...schedForm, amount: e.target.value })}
@@ -1806,7 +2773,8 @@ function HouseholdFinanceHub() {
             { id: 'overview', label: t.homeTab, icon: 'fa-house' },
             { id: 'transactions', label: t.historyTab, icon: 'fa-list' },
             { id: 'savings', label: t.savingsTab, icon: 'fa-piggy-bank' },
-            { id: 'bills', label: t.scheduledTab, icon: 'fa-calendar' }
+            { id: 'bills', label: t.scheduledTab, icon: 'fa-calendar' },
+            { id: 'networth', label: t.netWorthTab, icon: 'fa-scale-balanced' }
           ].map(tab => (
             <button
               key={tab.id}
