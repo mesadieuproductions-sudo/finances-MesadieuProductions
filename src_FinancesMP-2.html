@@ -1,0 +1,1834 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Household Finance Hub</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React & ReactDOM (UMD) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <!-- Babel for JSX compilation -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      overscroll-behavior: none;
+    }
+
+    .glass-card {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    input, select, button {
+      font-size: 16px !important;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-indigo-500 selection:text-white flex flex-col justify-between">
+
+<div id="root" class="w-full h-full"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// Translation Dictionary
+const translations = {
+  en: {
+    welcomeTitle: "Welcome!",
+    welcomeMsg: "This is an app I built to make finances and budgets easy.",
+    builtBy: "Built by Sonel-fils Mesadieu",
+    getStarted: "Get Started",
+    appTitle: "Finance Hub",
+    appSubtitle: "Personal Dashboard",
+    leftoverCash: "Leftover Cash",
+    totalIncome: "Total Income",
+    totalSpent: "Total Spent",
+    projectedCash: "Projected Cash",
+    totalSaved: "Total Saved",
+    spentRatio: "Income Spent Ratio (Includes Savings Transfers)",
+    pctSpent: "% Spent",
+    cashFlowOverview: "Cash Flow Overview",
+    logTransaction: "Log Transaction",
+    editTransaction: "Edit Transaction",
+    cancel: "Cancel",
+    expense: "Expense",
+    income: "Income",
+    descPlaceholder: "Description (e.g. Paycheck, Grocery Store)",
+    amountPlaceholder: "Amount ($)",
+    generalExpense: "General Expense",
+    creditCard: "Credit Card",
+    subscription: "Subscription",
+    utilities: "Utilities",
+    savingsTransfer: "Savings Transfer",
+    updateEntry: "Update Entry",
+    saveEntry: "Save Entry",
+    recentActivity: "Recent Activity",
+    seeAll: "See All",
+    noTransactions: "No transactions added yet.",
+    fullHistory: "Full Transaction History",
+    import: "Import",
+    export: "Export",
+    searchPlaceholder: "Search description...",
+    allCategories: "All Categories",
+    noTransactionsFound: "No transactions found.",
+    dataManagement: "Data Management",
+    clearDataDesc: "Clear all transactions, scheduled items, and savings to zero.",
+    resetToZero: "Reset to Zero",
+    confirmReset: "Are you sure you want to reset all data to zero? This will permanently wipe all transactions, scheduled items, and savings goals.",
+    resetSuccess: "All financial data has been reset to zero.",
+    savingsTransfers: "Savings & Transfers",
+    currentSavings: "Current Savings",
+    createSavingsTarget: "Create Savings Target",
+    goalTitlePlaceholder: "Goal Title (e.g. Vacation)",
+    targetAmountPlaceholder: "Target Amount ($)",
+    startingAmountPlaceholder: "Starting Amount ($)",
+    addGoal: "Add Goal",
+    noGoals: "No savings goals created yet.",
+    of: "of",
+    complete: "Complete",
+    addFromIncome: "Add from Income",
+    withdraw: "Withdraw",
+    transferToSavings: "Transfer Income into Savings Goal",
+    withdrawFromSavings: "Withdraw Money from Savings",
+    confirm: "Confirm",
+    borrowError: "Cannot borrow more than current savings amount.",
+    exportError: "No transactions available to export.",
+    importEmptyError: "The CSV file appears to be empty or missing headers.",
+    importSuccess: "Successfully imported",
+    importSuccessCount: "transactions!",
+    importParseError: "Could not parse any valid transaction records from the CSV file.",
+    scheduledProjectionMath: "Scheduled Projection Math",
+    calendar: "Calendar",
+    list: "List",
+    pendingBills: "- Pending Bills",
+    pendingIncome: "+ Pending Income",
+    projectedCashLeft: "Projected Cash Left Over:",
+    projectedVsActual: "Projected vs. Actual Expenses",
+    bar: "Bar",
+    pie: "Pie",
+    actualSpent: "Actual Spent",
+    pendingScheduled: "Pending Scheduled",
+    totalProjected: "Total Projected",
+    editScheduledItem: "Edit Scheduled Item",
+    scheduleRecurring: "Schedule Recurring Bill or Income",
+    scheduledIncome: "Scheduled Income",
+    scheduledExpense: "Scheduled Expense",
+    incomeTitlePlaceholder: "Income Title (e.g. Salary, Side-Gig)",
+    billTitlePlaceholder: "Bill Title (e.g. Rent, Subscription)",
+    biweekly: "Bi-weekly (Every 2 wks)",
+    monthly: "Monthly",
+    weekly: "Weekly",
+    utilityOther: "Utility / Other",
+    updateRecurring: "Update Recurring Item",
+    addRecurringIncome: "Add Recurring Income",
+    addRecurringExpense: "Add Recurring Expense",
+    sun: "Sun", mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat",
+    actualIncomeLegend: "Actual Income",
+    actualExpenseLegend: "Actual Expense",
+    pendingBillLegend: "Pending Bill",
+    pendingIncomeLegend: "Pending Income",
+    scheduledRulesList: "Scheduled Rules List",
+    noScheduledRules: "No scheduled rules.",
+    starts: "Starts",
+    incoming: "Incoming",
+    dateDetail: "Date Detail:",
+    loggedTransactions: "Logged Transactions",
+    noLoggedActivity: "No logged activity on this date.",
+    scheduledRecurringItems: "Scheduled / Recurring Items",
+    noScheduledDue: "No scheduled items due on this day.",
+    processed: "Processed",
+    pending: "Pending",
+    receive: "Receive",
+    pay: "Pay",
+    loggedCheck: "Logged ✓",
+    close: "Close",
+    homeTab: "Home",
+    historyTab: "History",
+    savingsTab: "Savings",
+    scheduledTab: "Scheduled"
+  },
+  ht: {
+    welcomeTitle: "Byenvini!",
+    welcomeMsg: "Aplikasyon sa fèt pou’w  ka we kijan lajan’w depanse eh ede’w sere kob pi fasil.",
+    builtBy: "Fèt pa Sonel-fils Mesadieu",
+    getStarted: "Kòmanse",
+    appTitle: " Finans Pa’m",
+    appSubtitle: "Tablo Bò Pèsonèl",
+    leftoverCash: "Lajan ki Rete",
+    totalIncome: "Lajan’w Antre",
+    totalSpent: "Tout Depans",
+    projectedCash: "Pwojeksyon",
+    totalSaved: "Total Kob Sere",
+    spentRatio: "Pousantaj Depans sou Antre (Gen ladan l Vreman Transfè Ekonomi yo)",
+    pctSpent: "% Depanse",
+    cashFlowOverview: " Mouvman Lajan",
+    logTransaction: "Anrejistre yon Tranzaksyon",
+    editTransaction: "Modifye Tranzaksyon an",
+    cancel: "Anile",
+    expense: "Depans",
+    income: "Kob Antre",
+    descPlaceholder: "Deskripsyon (egz. Chèk Lajan, Makèt)",
+    amountPlaceholder: "Montan ($)",
+    generalExpense: "Depans Jeneral",
+    creditCard: "Kat Kredi",
+    subscription: "Abonman",
+    utilities: "Bill ou ",
+    savingsTransfer: "Transfè kob Sere",
+    updateEntry: "Mete Antre a Jou",
+    saveEntry: "Anrejistre Tranzaksyon",
+    recentActivity: "Aktivite Resan",
+    seeAll: "Wè Tout",
+    noTransactions: "Okenn tranzaksyon poko ajoute.",
+    fullHistory: "Istwa Tout Tranzaksyon yo",
+    import: "Enpòte",
+    export: " Ekspòte",
+    searchPlaceholder: "Chèche nan deskripsyon...",
+    allCategories: "Tout Kategori",
+    noTransactionsFound: "Pa jwenn okenn tranzaksyon.",
+    dataManagement: "Jesyon Done",
+    clearDataDesc: "Efase tout tranzaksyon, eleman planifye, ak ekonomi pou mete yo a zewo.",
+    resetToZero: "Rekomanse  a Zewo",
+    confirmReset: "Èske ou sèten ou vle met tout done yo a zewo? Sa ap efase nèt tout tranzaksyon, eleman planifye, ak objektif ekonomi yo.",
+    resetSuccess: "Tout finansye yo tounen nan zewo.",
+    savingsTransfers: " Transfè nan Kob sere",
+    currentSavings: "Kob ou sere Kounye a",
+    createSavingsTarget: "Kreye yon Objektif Ekonomi",
+    goalTitlePlaceholder: "Tit Objektif (egz. Vakans)",
+    targetAmountPlaceholder: "Montan Objektif ($)",
+    startingAmountPlaceholder: "Montan Depa ($)",
+    addGoal: "Ajoute Objektif",
+    noGoals: "Okenn objektif ekonomi poko kreye.",
+    of: "sou",
+    complete: "Konplete",
+    addFromIncome: "Depoze soti nan Kob Antre",
+    withdraw: "Retire",
+    transferToSavings: "Transfere Lajan nan Kob Sere",
+    withdrawFromSavings: "Retire Lajan nan Kont Kob sere",
+    confirm: "Konfime",
+    borrowError: "Ou pa ka retire plis pase kantite lajan ou genyen nan Kont aktyèl la.",
+    exportError: "Pa gen okenn tranzaksyon pou ekspòte.",
+    importEmptyError: "Fichye CSV a parèt vid oswa li manke antèt.",
+    importSuccess: "Te enpòte avèk siksè",
+    importSuccessCount: "tranzaksyon!",
+    importParseError: "Nou pa t kapab li okenn dosye tranzaksyon ki valab nan fichye CSV sa a.",
+    scheduledProjectionMath: "Kalkil Pwojeksyon Planifye",
+    calendar: "Kalandriye",
+    list: "Lis",
+    pendingBills: "- Bil ki annatant",
+    pendingIncome: "+ Kob ki pral Antre",
+    projectedCashLeft: "Lajan Pwojte ki Rete:",
+    projectedVsActual: "Depans Pwojte kont Depans Reyèl",
+    bar: "Baton",
+    pie: "Sèk",
+    actualSpent: "Depans Reyèl",
+    pendingScheduled: "Planifye ki Annatant",
+    totalProjected: "Total Pwojeksyon",
+    editScheduledItem: "Modifye Eleman Planifye a",
+    scheduleRecurring: "Planifye Frè oswa Antre k ap Fèt Regilyèman",
+    scheduledIncome: "Chek Planifye",
+    scheduledExpense: "Depans Planifye",
+    incomeTitlePlaceholder: "Tit Antre (egz. Salè, Ti Kout Mèmen)",
+    billTitlePlaceholder: "Tit Frè (egz. Lwaye, Abònman)",
+    biweekly: "Chak De Semèn",
+    monthly: "Chak Mwa",
+    weekly: "Chak Semèn",
+    utilityOther: "Bil / Lòt bagay",
+    updateRecurring: "Mete Eleman Regilye a Jou",
+    addRecurringIncome: "Ajoute Chek  Regilye",
+    addRecurringExpense: "Ajoute Depans Regilye",
+    sun: "Dim", mon: "Len", tue: "Madi", wed: "Mèk", thu: "Jedi", fri: "Vand", sat: "Sam",
+    actualIncomeLegend: "Antre Reyèl",
+    actualExpenseLegend: "Depans Reyèl",
+    pendingBillLegend: "Bil Annatant",
+    pendingIncomeLegend: "Chek Annatant",
+    scheduledRulesList: "Lis Regilasyon Planifye",
+    noScheduledRules: "Pa gen okenn regilasyon planifye.",
+    starts: "Kòmanse",
+    incoming: " k ap Antre",
+    dateDetail: "Detay Dat la:",
+    loggedTransactions: "Tranzaksyon ki Anrejistre yo",
+    noLoggedActivity: "Okenn aktivite pa anrejistre pou dat sa a.",
+    scheduledRecurringItems: "Eleman Planifye / Regilye yo",
+    noScheduledDue: "Pa gen okenn eleman planifye ki dwe pou jodi a.",
+    processed: " Trete",
+    pending: "Annatant",
+    receive: "Resevwa",
+    pay: "Peye",
+    loggedCheck: "Anrejistre ✓",
+    close: "Fèmen",
+    homeTab: "Akèy",
+    historyTab: "Istwa",
+    savingsTab: "Ekonomi",
+    scheduledTab: "Planifikasyon"
+  }
+};
+
+function CashFlowChart({ income, expenses, lang }) {
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
+  const t = translations[lang];
+
+  useEffect(() => {
+    if (!chartRef.current) return;
+    const ctx = chartRef.current.getContext('2d');
+    
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    chartInstance.current = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [t.income, t.expense],
+        datasets: [{
+          data: [income, expenses],
+          backgroundColor: ['#10b981', '#f43f5e'],
+          borderRadius: 8,
+          barThickness: 28
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 11 } } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 11 } } }
+        }
+      }
+    });
+
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+        chartInstance.current = null;
+      }
+    };
+  }, [income, expenses, lang]);
+
+  return (
+    <div className="h-36 sm:h-44 w-full">
+      <canvas ref={chartRef}></canvas>
+    </div>
+  );
+}
+
+function ProjectedVsActualChart({ actualExpense, projectedExpense, chartType, lang }) {
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
+  const t = translations[lang];
+
+  useEffect(() => {
+    if (!chartRef.current) return;
+    const ctx = chartRef.current.getContext('2d');
+
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    const isPie = chartType === 'pie';
+
+    chartInstance.current = new Chart(ctx, {
+      type: isPie ? 'doughnut' : 'bar',
+      data: {
+        labels: [t.actualSpent, t.pendingScheduled],
+        datasets: [{
+          label: 'Amount ($)',
+          data: [actualExpense, projectedExpense],
+          backgroundColor: ['#f43f5e', '#fbbf24'],
+          borderRadius: isPie ? 0 : 8,
+          barThickness: isPie ? undefined : 32,
+          borderWidth: isPie ? 2 : 0,
+          borderColor: '#1e293b'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: isPie,
+            position: 'bottom',
+            labels: {
+              color: '#cbd5e1',
+              font: { family: 'Plus Jakarta Sans', size: 11 },
+              padding: 12
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => `$${context.raw.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+            }
+          }
+        },
+        scales: isPie ? {} : {
+          x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 11 } } },
+          y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 11 } } }
+        }
+      }
+    });
+
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+        chartInstance.current = null;
+      }
+    };
+  }, [actualExpense, projectedExpense, chartType, lang]);
+
+  return (
+    <div className="h-44 sm:h-52 w-full flex items-center justify-center">
+      <canvas ref={chartRef}></canvas>
+    </div>
+  );
+}
+
+function WelcomeModal({ onStart, lang, setLang }) {
+  const t = translations[lang];
+  return (
+    <div className="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="glass-card max-w-md w-full rounded-3xl p-6 sm:p-8 text-center space-y-6 shadow-2xl border border-indigo-500/30 relative">
+        
+        {/* Language selector in modal header */}
+        <div className="flex justify-end">
+          <div className="flex bg-slate-900 border border-slate-700 rounded-xl p-0.5 text-xs">
+            <button
+              onClick={() => setLang('en')}
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all ${lang === 'en' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang('ht')}
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all ${lang === 'ht' ? 'bg-indigo-600 text-white' : 'text-slate-400'}`}
+            >
+              HT
+            </button>
+          </div>
+        </div>
+
+        <div className="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-white text-3xl shadow-lg shadow-indigo-500/30">
+          <i className="fa-solid fa-hand-holding-dollar"></i>
+        </div>
+        <div className="space-y-3">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            {t.welcomeTitle}
+          </h1>
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-medium">
+            {t.welcomeMsg}
+          </p>
+          <div className="pt-2 border-t border-slate-800">
+            <p className="text-xs text-indigo-400 font-semibold uppercase tracking-wider">
+              {t.builtBy}
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={onStart}
+          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-indigo-500/20 transition-all transform active:scale-95 text-sm sm:text-base flex items-center justify-center gap-2"
+        >
+          <span>{t.getStarted}</span>
+          <i className="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function HouseholdFinanceHub() {
+  const todayStr = new Date().toISOString().split('T')[0];
+  const [lang, setLang] = useState(() => {
+    try {
+      return localStorage.getItem('hfh_lang') || 'en';
+    } catch(e) {
+      return 'en';
+    }
+  });
+
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [schedViewMode, setSchedViewMode] = useState('calendar');
+  const [expenseChartType, setExpenseChartType] = useState('bar');
+  const [editingId, setEditingId] = useState(null);
+  const [editingSchedId, setEditingSchedId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('All');
+  const fileInputRef = useRef(null);
+
+  const [currentCalendarDate, setCurrentCalendarDate] = useState(new Date());
+  const [selectedCalendarDay, setSelectedCalendarDay] = useState(null);
+
+  const t = translations[lang];
+
+  useEffect(() => {
+    try { localStorage.setItem('hfh_lang', lang); } catch (e) {}
+  }, [lang]);
+
+  const [processedOccurrences, setProcessedOccurrences] = useState(() => {
+    try {
+      const saved = localStorage.getItem('hfh_processed_occurrences');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const [transactions, setTransactions] = useState(() => {
+    try {
+      const saved = localStorage.getItem('hfh_transactions');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const [scheduledItems, setScheduledItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem('hfh_scheduled');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const [savingsGoals, setSavingsGoals] = useState(() => {
+    try {
+      const saved = localStorage.getItem('hfh_savings');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const [activeGoalModal, setActiveGoalModal] = useState(null);
+  const [modalAmount, setModalAmount] = useState('');
+  const [goalForm, setGoalForm] = useState({ name: '', target: '', current: '' });
+
+  const [transForm, setTransForm] = useState({ description: '', amount: '', category: 'General Expense', type: 'expense' });
+  const [schedForm, setSchedForm] = useState({ name: '', amount: '', startDate: todayStr, frequency: 'biweekly', category: 'Income', type: 'income' });
+
+  useEffect(() => {
+    try { localStorage.setItem('hfh_transactions', JSON.stringify(transactions)); } catch (e) {}
+  }, [transactions]);
+
+  useEffect(() => {
+    try { localStorage.setItem('hfh_scheduled', JSON.stringify(scheduledItems)); } catch (e) {}
+  }, [scheduledItems]);
+
+  useEffect(() => {
+    try { localStorage.setItem('hfh_savings', JSON.stringify(savingsGoals)); } catch (e) {}
+  }, [savingsGoals]);
+
+  useEffect(() => {
+    try { localStorage.setItem('hfh_processed_occurrences', JSON.stringify(processedOccurrences)); } catch (e) {}
+  }, [processedOccurrences]);
+
+  const handleResetData = () => {
+    if (window.confirm(t.confirmReset)) {
+      setTransactions([]);
+      setScheduledItems([]);
+      setSavingsGoals([]);
+      setProcessedOccurrences([]);
+      
+      localStorage.removeItem('hfh_transactions');
+      localStorage.removeItem('hfh_scheduled');
+      localStorage.removeItem('hfh_savings');
+      localStorage.removeItem('hfh_processed_occurrences');
+      
+      alert(t.resetSuccess);
+    }
+  };
+
+  const year = currentCalendarDate.getFullYear();
+  const month = currentCalendarDate.getMonth();
+  const firstDayOfMonth = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const prevMonth = () => setCurrentCalendarDate(new Date(year, month - 1, 1));
+  const nextMonth = () => setCurrentCalendarDate(new Date(year, month + 1, 1));
+
+  const doesItemOccurOnDate = (item, targetDateStr) => {
+    if (!item.startDate) return false;
+    
+    const [sYear, sMonth, sDay] = item.startDate.split('-').map(Number);
+    const [tYear, tMonth, tDay] = targetDateStr.split('-').map(Number);
+    
+    const start = Date.UTC(sYear, sMonth - 1, sDay);
+    const target = Date.UTC(tYear, tMonth - 1, tDay);
+
+    if (target < start) return false;
+
+    const freq = item.frequency || 'monthly';
+
+    if (freq === 'monthly') {
+      return tDay === sDay;
+    } 
+    
+    const diffDays = Math.round((target - start) / (1000 * 3600 * 24));
+
+    if (freq === 'biweekly') {
+      return diffDays % 14 === 0;
+    } else if (freq === 'weekly') {
+      return diffDays % 7 === 0;
+    }
+    return false;
+  };
+
+  const getCalendarDayItems = (dayNum) => {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+    
+    const actual = transactions.filter(t => t.date === dateStr);
+    
+    const scheduled = scheduledItems.filter(s => doesItemOccurOnDate(s, dateStr)).map(s => ({
+      ...s,
+      instanceKey: `${s.id}_${dateStr}`,
+      isProcessed: processedOccurrences.includes(`${s.id}_${dateStr}`)
+    }));
+
+    const actualIncome = actual.filter(a => a.type === 'income').reduce((acc, a) => acc + Number(a.amount), 0);
+    const actualExpense = actual.filter(a => a.type === 'expense').reduce((acc, a) => acc + Number(a.amount), 0);
+    
+    const schedIncome = scheduled.filter(s => !s.isProcessed && s.type === 'income').reduce((acc, s) => acc + Number(s.amount), 0);
+    const schedExpense = scheduled.filter(s => !s.isProcessed && s.type === 'expense').reduce((acc, s) => acc + Number(s.amount), 0);
+
+    return { dateStr, actual, scheduled, actualIncome, actualExpense, schedIncome, schedExpense };
+  };
+
+  let pendingBills = 0;
+  let pendingIncome = 0;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dayData = getCalendarDayItems(d);
+    pendingBills += dayData.schedExpense;
+    pendingIncome += dayData.schedIncome;
+  }
+
+  const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + Number(t.amount), 0);
+  const totalExpenses = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + Number(t.amount), 0);
+  const leftoverCash = totalIncome - totalExpenses;
+  const projectedBalance = leftoverCash + pendingIncome - pendingBills;
+  const totalProjectedExpense = totalExpenses + pendingBills;
+
+  const totalSaved = savingsGoals.reduce((acc, g) => acc + Number(g.current), 0);
+  const spentPercentage = totalIncome > 0 ? Math.min(100, Math.round((totalExpenses / totalIncome) * 100)) : 0;
+
+  const handleCreateSavingsGoal = (e) => {
+    e.preventDefault();
+    if (!goalForm.name || !goalForm.target) return;
+
+    const newGoal = {
+      id: Date.now().toString(),
+      name: goalForm.name,
+      target: parseFloat(goalForm.target),
+      current: parseFloat(goalForm.current) || 0,
+      icon: 'fa-piggy-bank'
+    };
+
+    setSavingsGoals([...savingsGoals, newGoal]);
+    setGoalForm({ name: '', target: '', current: '' });
+  };
+
+  const handleGoalActionSubmit = (e) => {
+    e.preventDefault();
+    if (!activeGoalModal || !modalAmount) return;
+
+    const amount = parseFloat(modalAmount);
+    if (isNaN(amount) || amount <= 0) return;
+
+    const targetGoal = savingsGoals.find(g => g.id === activeGoalModal.goalId);
+    if (!targetGoal) return;
+
+    if (activeGoalModal.action === 'deposit') {
+      setSavingsGoals(savingsGoals.map(g => g.id === targetGoal.id ? { ...g, current: g.current + amount } : g));
+      
+      setTransactions([{
+        id: Date.now().toString(),
+        description: `${lang === 'ht' ? 'Transfè nan Ekonomi:' : 'Savings Transfer:'} ${targetGoal.name}`,
+        amount: amount,
+        category: 'Savings',
+        type: 'expense',
+        date: new Date().toISOString().split('T')[0]
+      }, ...transactions]);
+    } else if (activeGoalModal.action === 'borrow') {
+      if (amount > targetGoal.current) {
+        alert(t.borrowError);
+        return;
+      }
+      setSavingsGoals(savingsGoals.map(g => g.id === targetGoal.id ? { ...g, current: g.current - amount } : g));
+      
+      setTransactions([{
+        id: Date.now().toString(),
+        description: `${lang === 'ht' ? 'Retire nan' : 'Borrowed from'} ${targetGoal.name}`,
+        amount: amount,
+        category: 'Savings Transfer',
+        type: 'income',
+        date: new Date().toISOString().split('T')[0]
+      }, ...transactions]);
+    }
+
+    setActiveGoalModal(null);
+    setModalAmount('');
+  };
+
+  const handleDeleteGoal = (id) => {
+    setSavingsGoals(savingsGoals.filter(g => g.id !== id));
+  };
+
+  const handleExportCSV = () => {
+    if (transactions.length === 0) {
+      alert(t.exportError);
+      return;
+    }
+
+    const headers = ["Description", "Amount", "Category", "Type", "Date"];
+    const rows = transactions.map(t => [
+      `"${(t.description || '').replace(/"/g, '""')}"`,
+      t.amount,
+      `"${t.category}"`,
+      t.type,
+      t.date
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `finance_hub_transactions_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleImportCSV = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const text = evt.target.result;
+      const lines = text.split(/\r\n|\n/).filter(line => line.trim() !== '');
+      if (lines.length <= 1) {
+        alert(t.importEmptyError);
+        return;
+      }
+
+      const importedTransactions = [];
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || lines[i].split(',');
+        if (cols && cols.length >= 2) {
+          const cleanCol = (col) => col ? col.replace(/^"|"$/g, '').trim() : '';
+          
+          const description = cleanCol(cols[0]) || 'Imported Entry';
+          const amountVal = parseFloat(cleanCol(cols[1]).replace(/[\$,]/g, ''));
+          const category = cleanCol(cols[2]) || (amountVal < 0 ? 'General Expense' : 'Income');
+          const typeVal = cleanCol(cols[3]).toLowerCase();
+          
+          let type = 'expense';
+          if (typeVal === 'income' || amountVal > 0) {
+            type = 'income';
+          } else if (typeVal === 'expense' || amountVal < 0) {
+            type = 'expense';
+          }
+
+          const date = cleanCol(cols[4]) || new Date().toISOString().split('T')[0];
+
+          if (!isNaN(amountVal)) {
+            importedTransactions.push({
+              id: Date.now().toString() + "_" + i,
+              description,
+              amount: Math.abs(amountVal),
+              category,
+              type,
+              date
+            });
+          }
+        }
+      }
+
+      if (importedTransactions.length > 0) {
+        setTransactions(prev => [...importedTransactions, ...prev]);
+        alert(`${t.importSuccess} ${importedTransactions.length} ${t.importSuccessCount}`);
+      } else {
+        alert(t.importParseError);
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  };
+
+  const handleSaveTransaction = (e) => {
+    e.preventDefault();
+    if (!transForm.description || !transForm.amount) return;
+
+    if (editingId) {
+      setTransactions(transactions.map(t => t.id === editingId ? {
+        ...t,
+        description: transForm.description,
+        amount: parseFloat(transForm.amount),
+        category: transForm.category,
+        type: transForm.type
+      } : t));
+      setEditingId(null);
+    } else {
+      const newEntry = {
+        id: Date.now().toString(),
+        description: transForm.description,
+        amount: parseFloat(transForm.amount),
+        category: transForm.category,
+        type: transForm.type,
+        date: new Date().toISOString().split('T')[0]
+      };
+      setTransactions([newEntry, ...transactions]);
+    }
+    setTransForm({ description: '', amount: '', category: 'General Expense', type: 'expense' });
+  };
+
+  const handleEditClick = (item) => {
+    setEditingId(item.id);
+    setTransForm({
+      description: item.description,
+      amount: item.amount,
+      category: item.category,
+      type: item.type
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setTransForm({ description: '', amount: '', category: 'General Expense', type: 'expense' });
+  };
+
+  const handleDeleteTransaction = (id) => {
+    setTransactions(transactions.filter(t => t.id !== id));
+    if (editingId === id) handleCancelEdit();
+  };
+
+  const handleSaveScheduledItem = (e) => {
+    e.preventDefault();
+    if (!schedForm.name || !schedForm.amount) return;
+
+    if (editingSchedId) {
+      setScheduledItems(scheduledItems.map(s => s.id === editingSchedId ? {
+        ...s,
+        name: schedForm.name,
+        amount: parseFloat(schedForm.amount),
+        startDate: schedForm.startDate,
+        frequency: schedForm.frequency,
+        category: schedForm.type === 'income' ? 'Income' : schedForm.category,
+        type: schedForm.type
+      } : s));
+      setEditingSchedId(null);
+    } else {
+      const newItem = {
+        id: Date.now().toString(),
+        name: schedForm.name,
+        amount: parseFloat(schedForm.amount),
+        startDate: schedForm.startDate,
+        frequency: schedForm.frequency,
+        category: schedForm.type === 'income' ? 'Income' : schedForm.category,
+        type: schedForm.type
+      };
+      setScheduledItems([...scheduledItems, newItem]);
+    }
+    setSchedForm({ name: '', amount: '', startDate: todayStr, frequency: 'biweekly', category: 'Income', type: 'income' });
+  };
+
+  const handleEditScheduledClick = (item) => {
+    setEditingSchedId(item.id);
+    setSchedForm({
+      name: item.name,
+      amount: item.amount,
+      startDate: item.startDate || todayStr,
+      frequency: item.frequency || 'monthly',
+      category: item.category,
+      type: item.type
+    });
+  };
+
+  const handleCancelSchedEdit = () => {
+    setEditingSchedId(null);
+    setSchedForm({ name: '', amount: '', startDate: todayStr, frequency: 'biweekly', category: 'Income', type: 'income' });
+  };
+
+  const handleProcessScheduledOccurrence = (item, dateStr) => {
+    const instanceKey = `${item.id}_${dateStr}`;
+    if (processedOccurrences.includes(instanceKey)) return;
+    
+    const newTx = {
+      id: Date.now().toString(),
+      description: item.name,
+      amount: item.amount,
+      category: item.category,
+      type: item.type,
+      date: dateStr
+    };
+    
+    setTransactions(prev => [newTx, ...prev]);
+    setProcessedOccurrences(prev => [...prev, instanceKey]);
+
+    if (selectedCalendarDay) {
+      setSelectedCalendarDay(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          actual: [newTx, ...prev.actual],
+          scheduled: prev.scheduled.map(s => 
+            s.instanceKey === instanceKey ? { ...s, isProcessed: true } : s
+          )
+        };
+      });
+    }
+  };
+
+  const handleDeleteScheduledItem = (id) => {
+    setScheduledItems(scheduledItems.filter(s => s.id !== id));
+    if (editingSchedId === id) handleCancelSchedEdit();
+  };
+
+  const filteredTransactions = transactions.filter(t => {
+    const matchesSearch = t.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = categoryFilter === 'All' || t.category === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
+
+  const getBadgeStyle = (category, type) => {
+    if (type === 'income') return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+    switch (category) {
+      case 'Subscription': return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
+      case 'Credit Card': return 'bg-amber-500/20 text-amber-300 border-amber-500/30';
+      case 'Savings': return 'bg-sky-500/20 text-sky-300 border-sky-500/30';
+      default: return 'bg-slate-800 text-slate-300 border-slate-700';
+    }
+  };
+
+  return (
+    <>
+      {showWelcome && <WelcomeModal onStart={() => setShowWelcome(false)} lang={lang} setLang={setLang} />}
+      
+      <div className="max-w-md md:max-w-6xl mx-auto px-3 sm:px-4 pt-3 pb-24 md:py-8 space-y-4">
+        
+        {/* Header */}
+        <header className="glass-card rounded-2xl p-3.5 flex items-center justify-between shadow-xl">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white text-base shadow-md">
+              <i className="fa-solid fa-wallet"></i>
+            </div>
+            <div>
+              <h1 className="text-base sm:text-2xl font-bold leading-tight">{t.appTitle}</h1>
+              <p className="text-[10px] sm:text-xs text-slate-400">{t.appSubtitle}</p>
+            </div>
+          </div>
+
+          {/* Top Language Switcher Toggle */}
+          <div className="flex bg-slate-900 border border-slate-700 rounded-xl p-1 text-xs">
+            <button
+              onClick={() => setLang('en')}
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all ${lang === 'en' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang('ht')}
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all ${lang === 'ht' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+            >
+              HT
+            </button>
+          </div>
+        </header>
+
+        {/* Metric Cards Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
+          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-indigo-500">
+            <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.leftoverCash}</span>
+            <div className={`text-base sm:text-xl font-black truncate ${leftoverCash >= 0 ? 'text-indigo-300' : 'text-rose-400'}`}>
+              ${leftoverCash.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+          </div>
+
+          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-emerald-500">
+            <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.totalIncome}</span>
+            <div className="text-base sm:text-xl font-black text-emerald-400 truncate">
+              +${totalIncome.toLocaleString('en-US', { minimumFractionDigits: 0 })}
+            </div>
+          </div>
+
+          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-rose-500">
+            <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.totalSpent}</span>
+            <div className="text-base sm:text-xl font-black text-rose-400 truncate">
+              -${totalExpenses.toLocaleString('en-US', { minimumFractionDigits: 0 })}
+            </div>
+          </div>
+
+          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-cyan-500">
+            <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.projectedCash}</span>
+            <div className={`text-base sm:text-xl font-black truncate ${projectedBalance >= 0 ? 'text-cyan-300' : 'text-rose-400'}`}>
+              ${projectedBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+          </div>
+
+          <div className="glass-card rounded-2xl p-3 border-l-4 border-l-purple-500 col-span-2 lg:col-span-1">
+            <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-0.5">{t.totalSaved}</span>
+            <div className="text-base sm:text-xl font-black text-purple-300 truncate">
+              ${totalSaved.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+          </div>
+        </div>
+
+        {/* Cash Ratio Progress Bar */}
+        <div className="glass-card p-3 rounded-2xl space-y-1.5">
+          <div className="flex justify-between text-xs text-slate-400 font-semibold">
+            <span>{t.spentRatio}</span>
+            <span>{spentPercentage}{t.pctSpent}</span>
+          </div>
+          <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+            <div 
+              className={`h-full transition-all duration-300 ${spentPercentage > 90 ? 'bg-rose-500' : 'bg-emerald-500'}`} 
+              style={{ width: `${spentPercentage}%` }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Tab: Overview */}
+        {activeTab === 'overview' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2 space-y-4">
+              <div className="glass-card p-3.5 sm:p-4 rounded-2xl">
+                <h2 className="text-xs sm:text-sm font-bold flex items-center gap-2 border-b border-slate-800 pb-2 mb-3">
+                  <i className="fa-solid fa-chart-column text-indigo-400"></i> {t.cashFlowOverview}
+                </h2>
+                <CashFlowChart income={totalIncome} expenses={totalExpenses} lang={lang} />
+              </div>
+
+              <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
+                <h2 className="text-xs sm:text-sm font-bold flex items-center justify-between border-b border-slate-800 pb-2">
+                  <span>
+                    <i className={`fa-solid ${editingId ? 'fa-pen-to-square text-amber-400' : 'fa-plus-circle text-indigo-400'} mr-1.5`}></i>
+                    {editingId ? t.editTransaction : t.logTransaction}
+                  </span>
+                  {editingId && (
+                    <button onClick={handleCancelEdit} className="text-xs text-slate-400 hover:text-white p-1">
+                      {t.cancel}
+                    </button>
+                  )}
+                </h2>
+
+                <form onSubmit={handleSaveTransaction} className="space-y-2.5">
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setTransForm({ ...transForm, type: 'expense' })}
+                      className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                        transForm.type === 'expense' ? 'bg-rose-500 text-white shadow-md' : 'bg-slate-800 text-slate-400'
+                      }`}
+                    >
+                      {t.expense}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setTransForm({ ...transForm, type: 'income' })}
+                      className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                        transForm.type === 'income' ? 'bg-emerald-500 text-white shadow-md' : 'bg-slate-800 text-slate-400'
+                      }`}
+                    >
+                      {t.income}
+                    </button>
+                  </div>
+
+                  <input
+                    type="text"
+                    placeholder={t.descPlaceholder}
+                    value={transForm.description}
+                    onChange={(e) => setTransForm({ ...transForm, description: e.target.value })}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500"
+                    required
+                  />
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="number"
+                      step="0.01"
+                      placeholder={t.amountPlaceholder}
+                      value={transForm.amount}
+                      onChange={(e) => setTransForm({ ...transForm, amount: e.target.value })}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500"
+                      required
+                    />
+                    <select
+                      value={transForm.category}
+                      onChange={(e) => setTransForm({ ...transForm, category: e.target.value })}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500"
+                    >
+                      <option value="General Expense">{t.generalExpense}</option>
+                      <option value="Credit Card">{t.creditCard}</option>
+                      <option value="Subscription">{t.subscription}</option>
+                      <option value="Utilities">{t.utilities}</option>
+                      <option value="Savings">{t.savingsTransfer}</option>
+                      <option value="Income">{t.income}</option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className={`w-full text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 ${
+                      editingId ? 'bg-amber-600 active:bg-amber-700' : 'bg-indigo-600 active:bg-indigo-700'
+                    }`}
+                  >
+                    <i className="fa-solid fa-check"></i> {editingId ? t.updateEntry : t.saveEntry}
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3 h-fit">
+              <h2 className="text-xs sm:text-sm font-bold flex items-center justify-between border-b border-slate-800 pb-2">
+                <span><i className="fa-solid fa-clock-rotate-left text-indigo-400 mr-1.5"></i> {t.recentActivity}</span>
+                <button onClick={() => setActiveTab('transactions')} className="text-xs text-indigo-400 font-semibold p-1">
+                  {t.seeAll}
+                </button>
+              </h2>
+
+              <div className="space-y-2">
+                {transactions.length === 0 ? (
+                  <div className="text-center py-4 text-xs text-slate-500">{t.noTransactions}</div>
+                ) : (
+                  transactions.slice(0, 6).map(item => (
+                    <div key={item.id} className="p-2.5 sm:p-3 bg-slate-900/70 rounded-xl border border-slate-800 flex items-center justify-between">
+                      <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                        <div className={`w-7 h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-bold ${
+                          item.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
+                        }`}>
+                          <i className={`fa-solid ${item.type === 'income' ? 'fa-arrow-down' : 'fa-arrow-up'}`}></i>
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-semibold text-xs text-slate-100 truncate">{item.description}</div>
+                          <div className="text-[10px] text-slate-400 truncate">{item.category}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className={`font-bold text-xs ${item.type === 'income' ? 'text-emerald-400' : 'text-slate-200'}`}>
+                          {item.type === 'income' ? '+' : '-'}${Number(item.amount).toFixed(2)}
+                        </span>
+                        <button onClick={() => handleEditClick(item)} className="text-slate-500 hover:text-amber-400 p-1.5">
+                          <i className="fa-solid fa-pen text-xs"></i>
+                        </button>
+                        <button onClick={() => handleDeleteTransaction(item.id)} className="text-slate-500 hover:text-rose-400 p-1.5">
+                          <i className="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab: History */}
+        {activeTab === 'transactions' && (
+          <div className="space-y-4">
+            <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h2 className="text-xs sm:text-sm font-bold">{t.fullHistory}</h2>
+                
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="file" 
+                    ref={fileInputRef} 
+                    onChange={handleImportCSV} 
+                    accept=".csv" 
+                    className="hidden" 
+                  />
+                  <button 
+                    onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                    className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1 border border-slate-700"
+                  >
+                    <i className="fa-solid fa-file-import text-indigo-400"></i> {t.import}
+                  </button>
+                  <button 
+                    onClick={handleExportCSV}
+                    className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1 border border-slate-700"
+                  >
+                    <i className="fa-solid fa-file-export text-emerald-400"></i> {t.export}
+                  </button>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <input
+                  type="text"
+                  placeholder={t.searchPlaceholder}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none"
+                />
+                <select
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                  className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none"
+                >
+                  <option value="All">{t.allCategories}</option>
+                  <option value="General Expense">{t.generalExpense}</option>
+                  <option value="Credit Card">{t.creditCard}</option>
+                  <option value="Subscription">{t.subscription}</option>
+                  <option value="Utilities">{t.utilities}</option>
+                  <option value="Savings">{t.savingsTransfer}</option>
+                  <option value="Income">{t.income}</option>
+                </select>
+              </div>
+
+              <div className="space-y-2 max-h-[55vh] overflow-y-auto pr-1">
+                {filteredTransactions.length === 0 ? (
+                  <div className="text-center py-6 text-xs text-slate-500">{t.noTransactionsFound}</div>
+                ) : (
+                  filteredTransactions.map(item => (
+                    <div key={item.id} className="p-2.5 sm:p-3 bg-slate-900/70 rounded-xl border border-slate-800 flex items-center justify-between">
+                      <div className="min-w-0 pr-2">
+                        <div className="font-bold text-xs text-white truncate">{item.description}</div>
+                        <div className="text-[10px] text-slate-400 truncate">{item.category} • {item.date}</div>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className={`font-bold text-xs ${item.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                          {item.type === 'income' ? '+' : '-'}${Number(item.amount).toFixed(2)}
+                        </span>
+                        <button onClick={() => handleEditClick(item)} className="text-slate-500 hover:text-amber-400 p-1.5">
+                          <i className="fa-solid fa-pen text-xs"></i>
+                        </button>
+                        <button onClick={() => handleDeleteTransaction(item.id)} className="text-slate-500 hover:text-rose-400 p-1.5">
+                          <i className="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="glass-card p-3.5 sm:p-4 rounded-2xl border border-rose-500/20 flex items-center justify-between">
+              <div>
+                <h3 className="text-xs sm:text-sm font-bold text-slate-200">{t.dataManagement}</h3>
+                <p className="text-[10px] text-slate-400">{t.clearDataDesc}</p>
+              </div>
+              <button
+                onClick={handleResetData}
+                className="px-3 py-2 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
+              >
+                <i className="fa-solid fa-rotate-left"></i> {t.resetToZero}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Tab: Savings Goals */}
+        {activeTab === 'savings' && (
+          <div className="space-y-4">
+            <div className="glass-card p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-indigo-900/40 via-purple-900/20 to-slate-900/60 border border-indigo-500/20 space-y-2">
+              <h2 className="text-xs sm:text-sm font-bold flex items-center gap-2 text-indigo-300">
+                <i className="fa-solid fa-piggy-bank"></i> {t.savingsTransfers}
+              </h2>
+              <div className="grid grid-cols-2 gap-3 pt-1">
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase font-bold block">{t.currentSavings}</span>
+                  <span className="text-lg font-black text-white">${totalSaved.toLocaleString()}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase font-bold block">{t.leftoverCash}</span>
+                  <span className="text-lg font-black text-indigo-300">${leftoverCash.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
+              <h2 className="text-xs sm:text-sm font-bold border-b border-slate-800 pb-2">{t.createSavingsTarget}</h2>
+              <form onSubmit={handleCreateSavingsGoal} className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <input
+                  type="text"
+                  placeholder={t.goalTitlePlaceholder}
+                  value={goalForm.name}
+                  onChange={(e) => setGoalForm({ ...goalForm, name: e.target.value })}
+                  className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                  required
+                />
+                <input
+                  type="number"
+                  placeholder={t.targetAmountPlaceholder}
+                  value={goalForm.target}
+                  onChange={(e) => setGoalForm({ ...goalForm, target: e.target.value })}
+                  className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                  required
+                />
+                <input
+                  type="number"
+                  placeholder={t.startingAmountPlaceholder}
+                  value={goalForm.current}
+                  onChange={(e) => setGoalForm({ ...goalForm, current: e.target.value })}
+                  className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="sm:col-span-3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5"
+                >
+                  <i className="fa-solid fa-plus"></i> {t.addGoal}
+                </button>
+              </form>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {savingsGoals.length === 0 ? (
+                <div className="col-span-2 glass-card p-6 text-center text-xs text-slate-500 rounded-2xl">
+                  {t.noGoals}
+                </div>
+              ) : (
+                savingsGoals.map(goal => {
+                  const percent = goal.target > 0 ? Math.min(100, Math.round((goal.current / goal.target) * 100)) : 0;
+                  return (
+                    <div key={goal.id} className="glass-card p-3.5 rounded-2xl space-y-2.5 relative border border-slate-800">
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-sm">
+                            <i className={`fa-solid ${goal.icon || 'fa-piggy-bank'}`}></i>
+                          </div>
+                          <div>
+                            <h3 className="text-xs sm:text-sm font-bold text-white">{goal.name}</h3>
+                            <p className="text-[10px] text-slate-400">${goal.current.toLocaleString()} {t.of} ${goal.target.toLocaleString()}</p>
+                          </div>
+                        </div>
+                        <button onClick={() => handleDeleteGoal(goal.id)} className="text-slate-600 hover:text-rose-400 p-1">
+                          <i className="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                      </div>
+
+                      <div className="space-y-1">
+                        <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                          <div 
+                            className="bg-purple-500 h-full transition-all duration-300"
+                            style={{ width: `${percent}%` }}
+                          ></div>
+                        </div>
+                        <div className="text-right text-[10px] font-bold text-slate-400">{percent}% {t.complete}</div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 pt-1">
+                        <button
+                          onClick={() => setActiveGoalModal({ goalId: goal.id, action: 'deposit' })}
+                          className="py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1"
+                        >
+                          <i className="fa-solid fa-arrow-down text-[10px]"></i> {t.addFromIncome}
+                        </button>
+                        <button
+                          onClick={() => setActiveGoalModal({ goalId: goal.id, action: 'borrow' })}
+                          className="py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1"
+                        >
+                          <i className="fa-solid fa-hand-holding-dollar text-[10px]"></i> {t.withdraw}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            {activeGoalModal && (
+              <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div className="glass-card max-w-xs w-full rounded-2xl p-4 space-y-3">
+                  <h3 className="text-xs sm:text-sm font-bold text-white capitalize border-b border-slate-800 pb-2">
+                    {activeGoalModal.action === 'deposit' ? t.transferToSavings : t.withdrawFromSavings}
+                  </h3>
+                  <form onSubmit={handleGoalActionSubmit} className="space-y-3">
+                    <input
+                      type="number"
+                      step="0.01"
+                      placeholder={t.amountPlaceholder}
+                      value={modalAmount}
+                      onChange={(e) => setModalAmount(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                      required
+                      autoFocus
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setActiveGoalModal(null)}
+                        className="w-1/2 py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold"
+                      >
+                        {t.cancel}
+                      </button>
+                      <button
+                        type="submit"
+                        className={`w-1/2 py-2 text-white font-bold rounded-xl text-xs ${
+                          activeGoalModal.action === 'deposit' ? 'bg-emerald-600' : 'bg-amber-600'
+                        }`}
+                      >
+                        {t.confirm}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Tab: Scheduled Bills & Income + Calendar */}
+        {activeTab === 'bills' && (
+          <div className="space-y-4">
+
+            <div className="glass-card p-3.5 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-indigo-500/20 space-y-2">
+              <div className="flex justify-between items-center border-b border-slate-800/80 pb-2">
+                <h3 className="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
+                  <i className="fa-solid fa-calculator"></i> {t.scheduledProjectionMath} ({currentCalendarDate.toLocaleString(lang === 'ht' ? 'fr-FR' : 'default', { month: 'short' })})
+                </h3>
+
+                <div className="flex bg-slate-900 p-0.5 rounded-lg border border-slate-800">
+                  <button
+                    onClick={() => setSchedViewMode('calendar')}
+                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold transition-all ${
+                      schedViewMode === 'calendar' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <i className="fa-solid fa-calendar-days mr-1"></i> {t.calendar}
+                  </button>
+                  <button
+                    onClick={() => setSchedViewMode('list')}
+                    className={`px-2.5 py-1 rounded-md text-[10px] font-bold transition-all ${
+                      schedViewMode === 'list' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <i className="fa-solid fa-list-check mr-1"></i> {t.list}
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 text-center text-xs pt-1">
+                <div className="bg-slate-900/60 p-2 rounded-xl border border-slate-800">
+                  <span className="text-[9px] text-slate-400 block uppercase font-bold">{t.leftoverCash}</span>
+                  <span className="font-bold text-slate-200">${leftoverCash.toFixed(2)}</span>
+                </div>
+                <div className="bg-slate-900/60 p-2 rounded-xl border border-slate-800">
+                  <span className="text-[9px] text-rose-400 block uppercase font-bold">{t.pendingBills}</span>
+                  <span className="font-bold text-rose-400">-${pendingBills.toFixed(2)}</span>
+                </div>
+                <div className="bg-slate-900/60 p-2 rounded-xl border border-slate-800">
+                  <span className="text-[9px] text-emerald-400 block uppercase font-bold">{t.pendingIncome}</span>
+                  <span className="font-bold text-emerald-400">+${pendingIncome.toFixed(2)}</span>
+                </div>
+              </div>
+              <div className="flex justify-between items-center pt-1 border-t border-slate-800/80 text-xs font-bold">
+                <span className="text-slate-300">{t.projectedCashLeft}</span>
+                <span className={projectedBalance >= 0 ? 'text-cyan-300 text-sm' : 'text-rose-400 text-sm'}>
+                  ${projectedBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+              </div>
+            </div>
+
+            <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3 border border-indigo-500/20">
+              <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                <h2 className="text-xs sm:text-sm font-bold flex items-center gap-2 text-slate-200">
+                  <i className="fa-solid fa-chart-pie text-amber-400"></i> {t.projectedVsActual}
+                </h2>
+                <div className="flex bg-slate-900 p-0.5 rounded-lg border border-slate-800">
+                  <button
+                    onClick={() => setExpenseChartType('bar')}
+                    className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all ${
+                      expenseChartType === 'bar' ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <i className="fa-solid fa-chart-simple mr-1"></i> {t.bar}
+                  </button>
+                  <button
+                    onClick={() => setExpenseChartType('pie')}
+                    className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all ${
+                      expenseChartType === 'pie' ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <i className="fa-solid fa-chart-pie mr-1"></i> {t.pie}
+                  </button>
+                </div>
+              </div>
+
+              <ProjectedVsActualChart
+                actualExpense={totalExpenses}
+                projectedExpense={pendingBills}
+                chartType={expenseChartType}
+                lang={lang}
+              />
+
+              <div className="grid grid-cols-3 gap-2 pt-1 border-t border-slate-800/80 text-center text-xs">
+                <div className="bg-slate-900/40 p-2 rounded-xl border border-slate-800">
+                  <span className="text-[9px] text-slate-400 uppercase font-bold block">{t.actualSpent}</span>
+                  <span className="font-bold text-rose-400">${totalExpenses.toFixed(2)}</span>
+                </div>
+                <div className="bg-slate-900/40 p-2 rounded-xl border border-slate-800">
+                  <span className="text-[9px] text-slate-400 uppercase font-bold block">{t.pendingScheduled}</span>
+                  <span className="font-bold text-amber-400">${pendingBills.toFixed(2)}</span>
+                </div>
+                <div className="bg-slate-900/40 p-2 rounded-xl border border-slate-800">
+                  <span className="text-[9px] text-slate-400 uppercase font-bold block">{t.totalProjected}</span>
+                  <span className="font-bold text-indigo-300">${totalProjectedExpense.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
+              <h2 className="text-xs sm:text-sm font-bold flex items-center justify-between border-b border-slate-800 pb-2">
+                <span>
+                  <i className={`fa-solid ${editingSchedId ? 'fa-pen-to-square text-amber-400' : 'fa-calendar-plus text-indigo-400'} mr-1.5`}></i>
+                  {editingSchedId ? t.editScheduledItem : t.scheduleRecurring}
+                </span>
+                {editingSchedId && (
+                  <button onClick={handleCancelSchedEdit} className="text-xs text-slate-400 hover:text-white p-1">
+                    {t.cancel}
+                  </button>
+                )}
+              </h2>
+              
+              <form onSubmit={handleSaveScheduledItem} className="space-y-2.5">
+                <div className="grid grid-cols-2 gap-2 mb-1">
+                  <button
+                    type="button"
+                    onClick={() => setSchedForm({ ...schedForm, type: 'income', category: 'Income' })}
+                    className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                      schedForm.type === 'income' ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-400'
+                    }`}
+                  >
+                    {t.scheduledIncome}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSchedForm({ ...schedForm, type: 'expense', category: 'Subscription' })}
+                    className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                      schedForm.type === 'expense' ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-400'
+                    }`}
+                  >
+                    {t.scheduledExpense}
+                  </button>
+                </div>
+
+                <input
+                  type="text"
+                  placeholder={schedForm.type === 'income' ? t.incomeTitlePlaceholder : t.billTitlePlaceholder}
+                  value={schedForm.name}
+                  onChange={(e) => setSchedForm({ ...schedForm, name: e.target.value })}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none"
+                  required
+                />
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder={t.amountPlaceholder}
+                    value={schedForm.amount}
+                    onChange={(e) => setSchedForm({ ...schedForm, amount: e.target.value })}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none"
+                    required
+                  />
+
+                  <select
+                    value={schedForm.frequency}
+                    onChange={(e) => setSchedForm({ ...schedForm, frequency: e.target.value })}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2.5 text-xs text-white focus:outline-none"
+                  >
+                    <option value="biweekly">{t.biweekly}</option>
+                    <option value="monthly">{t.monthly}</option>
+                    <option value="weekly">{t.weekly}</option>
+                  </select>
+
+                  <input
+                    type="date"
+                    value={schedForm.startDate}
+                    onChange={(e) => setSchedForm({ ...schedForm, startDate: e.target.value })}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none"
+                    required
+                  />
+
+                  {schedForm.type === 'expense' ? (
+                    <select
+                      value={schedForm.category}
+                      onChange={(e) => setSchedForm({ ...schedForm, category: e.target.value })}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2.5 text-xs text-white focus:outline-none"
+                    >
+                      <option value="Subscription">{t.subscription}</option>
+                      <option value="Credit Card">{t.creditCard}</option>
+                      <option value="Utilities">{t.utilityOther}</option>
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      value={t.income}
+                      disabled
+                      className="w-full bg-slate-900/50 border border-slate-800 text-slate-500 rounded-xl px-3 py-2.5 text-xs"
+                    />
+                  )}
+                </div>
+
+                <button 
+                  type="submit" 
+                  className={`w-full text-white font-bold py-3 rounded-xl text-xs sm:text-sm transition-all ${
+                    editingSchedId 
+                      ? 'bg-amber-600 active:bg-amber-700' 
+                      : schedForm.type === 'income' ? 'bg-emerald-600 active:bg-emerald-700' : 'bg-amber-600 active:bg-amber-700'
+                  }`}
+                >
+                  {editingSchedId 
+                    ? t.updateRecurring 
+                    : (schedForm.type === 'income' ? t.addRecurringIncome : t.addRecurringExpense)}
+                </button>
+              </form>
+            </div>
+
+            {schedViewMode === 'calendar' && (
+              <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                  <button onClick={prevMonth} className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold">
+                    <i className="fa-solid fa-chevron-left"></i>
+                  </button>
+                  <div className="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                    <i className="fa-solid fa-calendar text-indigo-400"></i>
+                    {currentCalendarDate.toLocaleString(lang === 'ht' ? 'fr-FR' : 'default', { month: 'long', year: 'numeric' })}
+                  </div>
+                  <button onClick={nextMonth} className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold">
+                    <i className="fa-solid fa-chevron-right"></i>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-7 gap-1 text-center font-bold text-[10px] text-slate-400 border-b border-slate-800 pb-1">
+                  <div>{t.sun}</div><div>{t.mon}</div><div>{t.tue}</div><div>{t.wed}</div><div>{t.thu}</div><div>{t.fri}</div><div>{t.sat}</div>
+                </div>
+
+                <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
+                  {Array.from({ length: firstDayOfMonth }).map((_, i) => (
+                    <div key={`empty-${i}`} className="h-14 sm:h-16 rounded-xl bg-slate-900/30 border border-transparent"></div>
+                  ))}
+
+                  {Array.from({ length: daysInMonth }).map((_, i) => {
+                    const dayNum = i + 1;
+                    const dayData = getCalendarDayItems(dayNum);
+                    const hasActivity = dayData.actual.length > 0 || dayData.scheduled.length > 0;
+
+                    return (
+                      <div
+                        key={`day-${dayNum}`}
+                        onClick={() => setSelectedCalendarDay(dayData)}
+                        className={`h-14 sm:h-16 rounded-xl p-1 border transition-all cursor-pointer flex flex-col justify-between ${
+                          hasActivity ? 'bg-slate-900/90 border-slate-700 hover:border-indigo-500' : 'bg-slate-900/40 border-slate-800/60'
+                        }`}
+                      >
+                        <div className="text-[10px] font-bold text-slate-300 flex justify-between">
+                          <span>{dayNum}</span>
+                          {hasActivity && <span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>}
+                        </div>
+
+                        <div className="space-y-0.5 overflow-hidden">
+                          {dayData.actualIncome > 0 && (
+                            <div className="bg-emerald-500/20 text-emerald-400 text-[8px] font-extrabold px-1 rounded truncate">
+                              +${dayData.actualIncome >= 1000 ? `${(dayData.actualIncome/1000).toFixed(1)}k` : dayData.actualIncome}
+                            </div>
+                          )}
+                          {dayData.actualExpense > 0 && (
+                            <div className="bg-rose-500/20 text-rose-400 text-[8px] font-extrabold px-1 rounded truncate">
+                              -${dayData.actualExpense >= 1000 ? `${(dayData.actualExpense/1000).toFixed(1)}k` : dayData.actualExpense}
+                            </div>
+                          )}
+                          {dayData.schedExpense > 0 && (
+                            <div className="bg-amber-500/20 text-amber-300 text-[8px] font-extrabold px-1 rounded truncate">
+                              ⌛-${dayData.schedExpense >= 1000 ? `${(dayData.schedExpense/1000).toFixed(1)}k` : dayData.schedExpense}
+                            </div>
+                          )}
+                          {dayData.schedIncome > 0 && (
+                            <div className="bg-cyan-500/20 text-cyan-300 text-[8px] font-extrabold px-1 rounded truncate">
+                              ⌛+${dayData.schedIncome >= 1000 ? `${(dayData.schedIncome/1000).toFixed(1)}k` : dayData.schedIncome}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="flex flex-wrap gap-3 pt-2 text-[10px] text-slate-400 border-t border-slate-800">
+                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded bg-emerald-500/30 border border-emerald-500/50"></span> {t.actualIncomeLegend}</span>
+                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded bg-rose-500/30 border border-rose-500/50"></span> {t.actualExpenseLegend}</span>
+                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded bg-amber-500/30 border border-amber-500/50"></span> {t.pendingBillLegend}</span>
+                  <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded bg-cyan-500/30 border border-cyan-500/50"></span> {t.pendingIncomeLegend}</span>
+                </div>
+              </div>
+            )}
+
+            {schedViewMode === 'list' && (
+              <div className="glass-card p-3.5 sm:p-4 rounded-2xl space-y-3">
+                <h2 className="text-xs sm:text-sm font-bold border-b border-slate-800 pb-2">{t.scheduledRulesList}</h2>
+                <div className="space-y-2">
+                  {scheduledItems.length === 0 ? (
+                    <div className="text-center py-6 text-xs text-slate-500">{t.noScheduledRules}</div>
+                  ) : (
+                    scheduledItems.map(item => (
+                      <div key={item.id} className="p-2.5 sm:p-3 rounded-xl border flex justify-between items-center bg-slate-900/80 border-slate-700">
+                        <div className="min-w-0 pr-2">
+                          <div className="flex items-center gap-1.5 mb-0.5">
+                            <span className="font-bold text-xs text-white truncate">{item.name}</span>
+                            <span className={`text-[9px] px-1.5 py-0.5 border rounded-full font-semibold shrink-0 ${getBadgeStyle(item.category, item.type)}`}>
+                              {item.type === 'income' ? t.incoming : item.category}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-slate-400 truncate capitalize">
+                            {t.starts} {item.startDate} • {item.frequency || 'monthly'} • ${Number(item.amount).toFixed(2)}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button onClick={() => handleEditScheduledClick(item)} className="text-slate-500 hover:text-amber-400 p-1.5">
+                            <i className="fa-solid fa-pen text-xs"></i>
+                          </button>
+                          <button onClick={() => handleDeleteScheduledItem(item.id)} className="text-slate-600 hover:text-rose-400 p-1.5">
+                            <i className="fa-solid fa-trash-can text-xs"></i>
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+
+            {selectedCalendarDay && (
+              <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div className="glass-card max-w-sm w-full rounded-2xl p-4 space-y-3">
+                  <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <h3 className="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                      <i className="fa-solid fa-calendar-day text-indigo-400"></i> {t.dateDetail} {selectedCalendarDay.dateStr}
+                    </h3>
+                    <button onClick={() => setSelectedCalendarDay(null)} className="text-slate-400 hover:text-white text-sm">
+                      <i className="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+
+                  <div className="space-y-3 max-h-[50vh] overflow-y-auto pr-1">
+                    <div>
+                      <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">{t.loggedTransactions}</span>
+                      {selectedCalendarDay.actual.length === 0 ? (
+                        <p className="text-[11px] text-slate-500 italic">{t.noLoggedActivity}</p>
+                      ) : (
+                        selectedCalendarDay.actual.map(a => (
+                          <div key={a.id} className="p-2 bg-slate-900 rounded-xl border border-slate-800 flex justify-between items-center mb-1">
+                            <span className="text-xs font-semibold text-white">{a.description}</span>
+                            <span className={`text-xs font-bold ${a.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                              {a.type === 'income' ? '+' : '-'}${Number(a.amount).toFixed(2)}
+                            </span>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">{t.scheduledRecurringItems}</span>
+                      {selectedCalendarDay.scheduled.length === 0 ? (
+                        <p className="text-[11px] text-slate-500 italic">{t.noScheduledDue}</p>
+                      ) : (
+                        selectedCalendarDay.scheduled.map(s => (
+                          <div key={s.instanceKey} className="p-2 bg-slate-900 rounded-xl border border-slate-800 flex justify-between items-center mb-1">
+                            <div>
+                              <div className="text-xs font-semibold text-white">{s.name}</div>
+                              <div className="text-[9px] text-amber-400 capitalize">{s.frequency || 'monthly'} • {s.isProcessed ? t.processed : t.pending}</div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className={`text-xs font-bold ${s.type === 'income' ? 'text-cyan-400' : 'text-amber-400'}`}>
+                                {s.type === 'income' ? '+' : '-'}${Number(s.amount).toFixed(2)}
+                              </span>
+                              {!s.isProcessed ? (
+                                <button
+                                  onClick={() => handleProcessScheduledOccurrence(s, selectedCalendarDay.dateStr)}
+                                  className={`px-2 py-0.5 border rounded text-[10px] font-bold transition-opacity ${
+                                    s.type === 'income'
+                                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/30'
+                                      : 'bg-amber-500/20 text-amber-400 border-amber-500/30 hover:bg-amber-500/30'
+                                  }`}
+                                >
+                                  {s.type === 'income' ? t.receive : t.pay}
+                                </button>
+                              ) : (
+                                <span className="text-[10px] text-emerald-400 font-bold">{t.loggedCheck}</span>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedCalendarDay(null)}
+                    className="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs"
+                  >
+                    {t.close}
+                  </button>
+                </div>
+              </div>
+            )}
+
+          </div>
+        )}
+
+        {/* Bottom Navigation */}
+        <nav className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 px-3 py-2 z-[40] flex justify-around items-center max-w-md md:max-w-xl mx-auto rounded-t-2xl shadow-2xl">
+          {[
+            { id: 'overview', label: t.homeTab, icon: 'fa-house' },
+            { id: 'transactions', label: t.historyTab, icon: 'fa-list' },
+            { id: 'savings', label: t.savingsTab, icon: 'fa-piggy-bank' },
+            { id: 'bills', label: t.scheduledTab, icon: 'fa-calendar' }
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl text-[10px] font-bold transition-all ${
+                activeTab === tab.id ? 'text-indigo-400 scale-105' : 'text-slate-500 hover:text-slate-300'
+              }`}
+            >
+              <i className={`fa-solid ${tab.icon} text-base`}></i>
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </nav>
+
+      </div>
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<HouseholdFinanceHub />);
+</script>
+
+</body>
+</html>
